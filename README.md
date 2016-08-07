@@ -27,8 +27,8 @@ This library is versioned through gopkg.in, and some libraries are inter-depende
 With that in mind, you will have to do a little more than run the typical `go get`:
 
  1. Create a fork of this repository on GitHub (lets assume its `github.com/example/evelib`)
- 2. On your development machine, run `go get gopkg.in/evelib.v#` where `#` is either the latest version or the version you intend to work on.
- 3. Your `GOPATH` should now look like `$GOPATH/src/gopkg.in/evelib.v#`
+ 2. On your development machine, run `go get gopkg.in/vivace-io/evelib.v#` where `#` is either the latest version or the version you intend to work on.
+ 3. Your `GOPATH` should now look like `$GOPATH/src/gopkg.in/vivace-io/evelib.v#`
  4. In the folder you just cloned, you need to reset your origin URL:
     - `git remote set-url origin git@github.com:<example>/evelib.git`
     - `git fetch`
