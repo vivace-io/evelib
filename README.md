@@ -1,5 +1,7 @@
 # evelib
 
+[ ![Codeship Status for vivace-io/evelib](https://codeship.com/projects/5d940200-40da-0134-fc42-4202afd6e25f/status?branch=master)](https://codeship.com/projects/167799)
+
 Library for connecting to and using Eve Online and other related 3rd party services.
 
 This collection of libraries is still in a very early stage of development, and APIs are subject to change without notice on master.
@@ -7,6 +9,10 @@ This collection of libraries is still in a very early stage of development, and 
 **Stable API Versions:** when a version is deemed stable
 
 Stable API versions will be tagged on the repository, and released through gopkg.in!
+
+## Version 0
+
+`go get gopkg.in/vivace-io/evelib.v0`
 
 ## Usage
 
@@ -20,7 +26,7 @@ Releases are versioned following [Semantic Versioning 2.0](http://semver.org/spe
 
 ### Working on the Code
 
-**Please pead the Pull Requests Section before making a pull request.**
+**Please read the Pull Requests Section before making a pull request.**
 
 This library is versioned through gopkg.in, and some libraries are inter-dependent on one another (the `zkill` depends on the package `crest`, for example).
 
