@@ -13,14 +13,13 @@ func TestMain(m *testing.M) {
 		log.Printf("Testing setup failed with error: %v", err)
 		return
 	}
-
+	// Disable TLS verification for Continuous Integration testing.
+	TLSEnabled(false)
 	code := m.Run()
 	fmt.Println()
 	log.Printf("Tests Completed with Code %v [%v Queries]", code, queryCount)
 	fmt.Println()
 	os.Exit(code)
-	// Disable TLS verification for Continuous Integration testing.
-	TLSEnabled(false)
 }
 
 func TestCRESTError(t *testing.T) {
