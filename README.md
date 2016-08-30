@@ -1,6 +1,6 @@
 # evelib
 
-[ ![Codeship Status for vivace-io/evelib](https://codeship.com/projects/5d940200-40da-0134-fc42-4202afd6e25f/status?branch=master)](https://codeship.com/projects/167799)
+[ ![Codeship Status for vivace-io/evelib](https://codeship.com/projects/5519f410-5086-0134-6d94-3e20d1b43dc1/status?branch=master)](https://codeship.com/projects/171036)
 
 Library for connecting to and using Eve Online and other related 3rd party services.
 
