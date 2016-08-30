@@ -12,7 +12,7 @@ Stable API versions will be tagged on the repository, and released through gopkg
 
 ## Version 0
 
-`go get gopkg.in/vivace-io/evelib.v0`
+`go get github.com/vivace-io/evelib`
 
 ## Usage
 
@@ -28,17 +28,7 @@ Releases are versioned following [Semantic Versioning 2.0](http://semver.org/spe
 
 **Please read the Pull Requests Section before making a pull request.**
 
-This library is versioned through gopkg.in, and some libraries are inter-dependent on one another (the `zkill` depends on the package `crest`, for example).
-
-With that in mind, you will have to do a little more than run the typical `go get`:
-
- 1. Create a fork of this repository on GitHub (lets assume its `github.com/example/evelib`)
- 2. On your development machine, run `go get gopkg.in/vivace-io/evelib.v#` where `#` is either the latest version or the version you intend to work on.
- 3. Your `GOPATH` should now look like `$GOPATH/src/gopkg.in/vivace-io/evelib.v#`
- 4. In the folder you just cloned, you need to reset your origin URL:
-    - `git remote set-url origin git@github.com:<example>/evelib.git`
-    - `git fetch`
- 5. You should work on your code and push to your fork from that directory/repository.
+TODO
 
 ### Pull Requests
 To keep everything running smoothly, there are a few things that I ask of you:

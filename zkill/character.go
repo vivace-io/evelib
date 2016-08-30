@@ -1,6 +1,6 @@
 package zkill
 
-import "gopkg.in/evelib.v0/crest"
+import "github.com/vivace-io/evelib/crest"
 
 /* zkill/character.go
  * Defines functions for retrieving character data from zkillboard

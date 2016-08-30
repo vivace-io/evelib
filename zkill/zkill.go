@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"gopkg.in/evelib.v0/crest"
+	"github.com/vivace-io/evelib/crest"
 )
 
 // ZKillboardAPIURI is the default URL to zKillboard API
