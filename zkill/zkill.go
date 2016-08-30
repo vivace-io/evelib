@@ -28,7 +28,8 @@ func Init(userAgent string) error {
 	APIAddr = DefaultAPIAddr
 	RedisQAddr = DefaultRedisQURI
 	webClient = new(http.Client)
-	return checkUserAgent()
+	// return checkUserAgent()
+	return nil
 }
 
 type Options struct {

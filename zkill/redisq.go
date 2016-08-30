@@ -8,80 +8,89 @@ import (
 	"net/http"
 )
 
-var (
-	running         = false
-	redisQRecievers []RedisQReciever
-	redisQChannels  []chan Kill
-	redisqErrors    chan error
-)
+var ()
 
 type RedisQReciever func(Kill)
-
-// ZKillboardRedisQ default endpoint
-const ZKillboardRedisQ = "https://redisq.zkillboard.com/listen.php"
-
-var alreadyRunning = false
 
 type redisqResp struct {
 	Kill Kill `json:"package"`
 }
 
-func RedisQStart() error {
-	if running {
+type RedisQClient struct {
+	UserAgent string
+	webClient *http.Client
+	errc      chan error
+	recievers []RedisQReciever
+	channels  []chan Kill
+	running   bool
+}
+
+func NewRedisQClient(userAgent string) (client *RedisQClient) {
+	client = new(RedisQClient)
+	client.UserAgent = userAgent
+	webClient = new(http.Client)
+	return
+}
+
+func (this *RedisQClient) Start() error {
+	if this.running {
 		return errors.New("already watching redisq")
 	}
-	running = true
+	this.running = true
 	go func() {
-		for running {
-			kill, err := fetchRedisQ()
+		for this.running {
+			kill, err := this.fetch()
 			if err != nil {
-				logRedisQError(err)
+				this.logError(err)
 			} else {
-				redisqSend(kill)
+				this.send(kill)
 			}
 		}
 	}()
 	return nil
 }
 
-func RedisQSetErrorChannel(errChan chan error) {
-	redisqErrors = errChan
+func (this *RedisQClient) SetErrorChannel(errChan chan error) {
+	this.errc = errChan
 }
 
-func RedisQStop() {
-	running = false
+func (this *RedisQClient) Stop() {
+	this.running = false
 }
 
-func redisqSend(k Kill) {
-	for _, c := range redisQChannels {
+func (this *RedisQClient) send(k Kill) {
+	for _, c := range this.channels {
 		go func() {
 			c <- k
 		}()
 	}
-	for _, r := range redisQRecievers {
+	for _, r := range this.recievers {
 		go r(k)
 	}
 }
 
-func RedisQAddChannel(output chan Kill) {
-	redisQChannels = append(redisQChannels, output)
+func (this *RedisQClient) AddChannel(output chan Kill) {
+	this.channels = append(this.channels, output)
 }
 
-func RedisQAddReciever(reciever RedisQReciever) {
-	redisQRecievers = append(redisQRecievers, reciever)
+func (this *RedisQClient) AddReciever(reciever RedisQReciever) {
+	this.recievers = append(this.recievers, reciever)
 }
 
-func fetchRedisQ() (k Kill, err error) {
-	request, err := http.NewRequest("GET", RedisQAddr, nil)
+func (this *RedisQClient) fetch() (k Kill, err error) {
+	webc := &http.Client{}
+	request, err := http.NewRequest("GET", DefaultRedisQURI, nil)
 	if err != nil {
-		return
+		panic(err)
 	}
 	request.Header.Add("User-Agent", UserAgent)
 
-	rawresp, err := webClient.Do(request)
+	rawresp, err := webc.Do(request)
 	if err != nil {
 		return
 	}
+	defer rawresp.Body.Close()
+
 	body, err := ioutil.ReadAll(rawresp.Body)
 	if err != nil {
 		return
@@ -92,10 +101,10 @@ func fetchRedisQ() (k Kill, err error) {
 	return
 }
 
-func logRedisQError(err error) {
-	if redisqErrors != nil {
+func (this *RedisQClient) logError(err error) {
+	if this.errc != nil {
 		go func() {
-			redisqErrors <- err
+			this.errc <- err
 		}()
 	} else {
 		log.Printf("[ERROR][REDISQ] - %v", err)
