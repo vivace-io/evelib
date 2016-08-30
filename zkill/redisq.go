@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
-<<<<<<< HEAD
 	"log"
 	"net/http"
 )
@@ -17,9 +16,6 @@ var (
 )
 
 type RedisQReciever func(Kill)
-=======
-	"net/http"
-)
 
 // ZKillboardRedisQ default endpoint
 const ZKillboardRedisQ = "https://redisq.zkillboard.com/listen.php"
@@ -41,13 +37,11 @@ func NewRedisQ() *RedisQClient {
 	}
 	return c
 }
->>>>>>> 231cf7d91084be67f3f16cd3fd696295b1fc6653
 
 type redisqResp struct {
 	Kill Kill `json:"package"`
 }
 
-<<<<<<< HEAD
 func RedisQStart() error {
 	if running {
 		return errors.New("already watching redisq")
@@ -93,15 +87,6 @@ func RedisQAddReciever(reciever RedisQReciever) {
 	redisQRecievers = append(redisQRecievers, reciever)
 }
 
-func fetchRedisQ() (k Kill, err error) {
-	request, err := http.NewRequest("GET", RedisQAddr, nil)
-	if err != nil {
-		return
-	}
-	request.Header.Add("User-Agent", UserAgent)
-
-	rawresp, err := webClient.Do(request)
-=======
 // FetchKillmails starts retrieving Killmails from ZKillboard RedisQ, sending
 // them (and any errors encountered) through the channels passed
 func (c *RedisQClient) FetchKillmails(output chan Kill, errChan chan error) {
@@ -111,7 +96,7 @@ func (c *RedisQClient) FetchKillmails(output chan Kill, errChan chan error) {
 	}
 	go func() {
 		for {
-			kill, err := c.fetchRedisQ()
+			kill, err := fetchRedisQ()
 			if err != nil {
 				errChan <- err
 			} else {
@@ -121,15 +106,14 @@ func (c *RedisQClient) FetchKillmails(output chan Kill, errChan chan error) {
 	}()
 }
 
-func (c *RedisQClient) fetchRedisQ() (k Kill, err error) {
-	request, err := http.NewRequest("GET", c.RedisQURI, nil)
+func fetchRedisQ() (k Kill, err error) {
+	request, err := http.NewRequest("GET", RedisQAddr, nil)
 	if err != nil {
 		return
 	}
-	request.Header.Add("User-Agent", c.UserAgent)
+	request.Header.Add("User-Agent", UserAgent)
 
-	rawresp, err := c.webClient.Do(request)
->>>>>>> 231cf7d91084be67f3f16cd3fd696295b1fc6653
+	rawresp, err := webClient.Do(request)
 	if err != nil {
 		return
 	}
@@ -142,7 +126,6 @@ func (c *RedisQClient) fetchRedisQ() (k Kill, err error) {
 	k = zresp.Kill
 	return
 }
-<<<<<<< HEAD
 
 func logRedisQError(err error) {
 	if redisqErrors != nil {
@@ -153,5 +136,3 @@ func logRedisQError(err error) {
 		log.Printf("[ERROR][REDISQ] - %v", err)
 	}
 }
-=======
->>>>>>> 231cf7d91084be67f3f16cd3fd696295b1fc6653
