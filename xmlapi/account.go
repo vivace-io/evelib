@@ -49,3 +49,33 @@ type AccountStatus struct {
 	LogonCount   int   `xml:"result>logonCount"`
 	LogonMinutes int   `xml:"result>logonMinutes"`
 }
+
+func (this *Client) AccountCharacters(key Key) (*AccountCharactersResponse, error) {
+	var err error
+	response := AccountCharactersResponse{}
+	err = this.fetch("/account/Characters.xml.aspx", key, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, response.Error
+}
+
+type AccountCharactersResponse struct {
+	Result
+	AccountCharacters AccountCharacters `xml:"result"`
+}
+
+type AccountCharacters struct {
+	Rows []AccountCharactersRow `xml:"rowset>row"`
+}
+
+type AccountCharactersRow struct {
+	Name            string `xml:"name,attr"`
+	ID              int    `xml:"id,attr"`
+	CorporationName string `xml:"corporationName,attr"`
+	CorporationID   int    `xml:"corporationID,attr"`
+	AllianceName    string `xml:"allianceName,attr"`
+	AllianceID      int    `xml:"allianceID,attr"`
+	FactionName     string `xml:"factionName,attr"`
+	FactionID       int    `xml:"factionID,attr"`
+}
