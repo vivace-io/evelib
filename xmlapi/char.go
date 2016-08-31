@@ -71,3 +71,48 @@ func (this *Client) CharBookmarks(key Key, charID int) (*BookmarksResponse, erro
 	}
 	return &response, response.Error
 }
+
+func (this *Client) CharCharacterSheet(key Key, charID int) (*CharacterSheetResponse, error) {
+	var err error
+	response := CharacterSheetResponse{}
+	args := url.Values{}
+	args.Add("characterID", strconv.Itoa(charID))
+	err = this.fetch("/char/CharacterSheet.xml.aspx", args, key, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, response.Error
+}
+
+type CharacterSheetResponse struct {
+	Result
+	CharacterSheet CharacterSheet `xml:"result"`
+}
+
+type CharacterSheet struct {
+	CharacterID       int    `xml:"characterID"`
+	Name              string `xml:"name"`
+	HomeStationID     int    `xml:"homeStationID"`
+	DoB               eTime  `xml:"DoB"`
+	Race              string `xml:"race"`
+	BloodLineID       int    `xml:"bloodLineID"`
+	BloodLine         string `xml:"bloodLine"`
+	AncestryID        int    `xml:"ancestryID"`
+	Ancestry          string `xml:"ancestry"`
+	Gender            string `xml:"gender"`
+	CorporationName   string `xml:"corporationName"`
+	CorporationID     int    `xml:"corporationID"`
+	AllianceName      string `xml:"allianceName"`
+	AllianceID        int    `xml:"allianceID"`
+	FactionName       string `xml:"factionName"`
+	FactionID         int    `xml:"factionID"`
+	CloneTypeID       int    `xml:"cloneTypeID"`
+	CloneName         string `xml:"cloneName"`
+	CloneSkillPoints  int    `xml:"cloneSkillPoints"`
+	FreeSkillPoints   int    `xml:"freeSkillPoints"`
+	FreeRespecs       int8   `xml:"freeRespecs"`
+	CloneJumpDate     eTime  `xml:"cloneJumpDate"`
+	LastRespecDate    eTime  `xml:"lastRespecDate"`
+	LastTimedRespec   eTime  `xml:"lastTimedRespec"`
+	RemoteStationDate eTime  `xml:"remoteStationDate"`
+}
