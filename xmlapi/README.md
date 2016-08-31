@@ -10,7 +10,7 @@ Package implements a client to query the Eve Online XML API
   - [x] AccountStatus
   - [x] Characters
 - [ ] Character
-  - [ ] AccountBalance
+  - [x] AccountBalance
   - [ ] AssetList
   - [ ] Blueprints
   - [ ] Bookmarks
