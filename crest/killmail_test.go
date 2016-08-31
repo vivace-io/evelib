@@ -22,12 +22,8 @@ func TestGetKillMail(t *testing.T) {
 	if kill.KillID != id {
 		t.Error("kill id mismatch - want %v but got %v", id, kill.KillID)
 	}
-	if kill.Victim.Character != nil {
-		if kill.Victim.Character.ID != 325487984 {
-			t.Error("victim character id mismatch - want 325487984 but got %v", kill.Victim.Character.ID)
-		}
-	} else {
-		t.Error("victim character was nil")
+	if kill.Victim.Character.ID != 325487984 {
+		t.Error("victim character id mismatch - want 325487984 but got %v", kill.Victim.Character.ID)
 	}
 	if len(kill.Attackers) != 4 {
 		t.Errorf("unexpected attacker count - wanted 4 but got %v", len(kill.Attackers))

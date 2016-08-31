@@ -8,8 +8,6 @@ import (
 	"net/http"
 )
 
-var ()
-
 type RedisQReciever func(Kill)
 
 type redisqResp struct {
@@ -18,7 +16,6 @@ type redisqResp struct {
 
 type RedisQClient struct {
 	UserAgent string
-	webClient *http.Client
 	errc      chan error
 	recievers []RedisQReciever
 	channels  []chan Kill
@@ -28,7 +25,6 @@ type RedisQClient struct {
 func NewRedisQClient(userAgent string) (client *RedisQClient) {
 	client = new(RedisQClient)
 	client.UserAgent = userAgent
-	webClient = new(http.Client)
 	return
 }
 
