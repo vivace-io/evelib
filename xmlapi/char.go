@@ -57,3 +57,17 @@ func (this *Client) CharBlueprints(key Key, charID int) (*BlueprintsResponse, er
 	}
 	return &response, response.Error
 }
+
+// CharBookmarks returns BookmarksResponse, containing a list of BookmarksFolder
+// which contains a list of Bookmarks
+func (this *Client) CharBookmarks(key Key, charID int) (*BookmarksResponse, error) {
+	var err error
+	response := BookmarksResponse{}
+	args := url.Values{}
+	args.Add("characterID", strconv.Itoa(charID))
+	err = this.fetch("/char/Bookmarks.xml.aspx", args, key, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, response.Error
+}
