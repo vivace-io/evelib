@@ -116,3 +116,31 @@ type CharacterSheet struct {
 	LastTimedRespec   eTime  `xml:"lastTimedRespec"`
 	RemoteStationDate eTime  `xml:"remoteStationDate"`
 }
+
+func (this *Client) CharChatChannels(key Key, charID int) (*ChatChannelsResponse, error) {
+	var err error
+	response := ChatChannelsResponse{}
+	args := url.Values{}
+	args.Add("characterID", strconv.Itoa(charID))
+	err = this.fetch("/char/ChatChannels.xml.aspx", args, key, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, response.Error
+}
+
+type ChatChannelsResponse struct {
+	Result
+	Channels []ChatChannel `xml:"result>rowset>row"`
+}
+
+type ChatChannel struct {
+	ChannelID     int    `xml:"channelID,attr"`
+	OwnerID       int    `xml:"ownerID,attr"`
+	OwnerName     string `xml:"ownerName,attr"`
+	DisplayName   string `xml:"displayName,attr"`
+	ComparisonKey string `xml:"comparisonKey",attr`
+	HasPassword   bool   `xml:"hasPassword,attr"`
+	MOTD          string `xml:"motd,attr"`
+	//Groups        []ChatAccessorGroup `xml:"rowset>row"`
+}
