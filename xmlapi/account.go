@@ -1,5 +1,7 @@
 package xmlapi
 
+// AccountAPIKeyInfo returns APIKeyInfoResponse which contains information
+// regarding the passed API key
 func (this *Client) AccountAPIKeyInfo(key Key) (*APIKeyInfoResponse, error) {
 	var err error
 	response := APIKeyInfoResponse{}
@@ -10,18 +12,22 @@ func (this *Client) AccountAPIKeyInfo(key Key) (*APIKeyInfoResponse, error) {
 	return &response, response.Error
 }
 
+// APIKeyInfoResponse contains the APIKeyInfo.
 type APIKeyInfoResponse struct {
 	Result
 	KeyInfo APIKeyInfo `xml:"result>key"`
 }
 
+// APIKeyInfo contains the access mask, the type, and Rows as a slice of []APIKeyInfoRow.
 type APIKeyInfo struct {
 	AccessMask int             `xml:"accessMask,attr"`
 	Type       string          `xml:"type,attr"`
 	Rows       []APIKeyInfoRow `xml:"rowset>row"`
 }
 
+// APIKeyInfoRow contains information on a character.
 type APIKeyInfoRow struct {
+	// TODO - is duplicate of AccountCharactersRow
 	ID              int    `xml:"characterID,attr"`
 	Name            string `xml:"characterName,attr"`
 	CorporationID   int    `xml:"corporationID,attr"`
@@ -32,6 +38,7 @@ type APIKeyInfoRow struct {
 	FactionName     string `xml:"factionName,attr"`
 }
 
+// AccountStatus returns the status of the account linked to the passed API Key
 func (this *Client) AccountStatus(key Key) (*AccountStatus, error) {
 	var err error
 	response := AccountStatus{}
@@ -42,6 +49,7 @@ func (this *Client) AccountStatus(key Key) (*AccountStatus, error) {
 	return &response, response.Error
 }
 
+// AccountStatus contains information about an account associated with a key.
 type AccountStatus struct {
 	Result
 	PaidUntil    eTime `xml:"result>paidUntil"`
@@ -50,6 +58,7 @@ type AccountStatus struct {
 	LogonMinutes int   `xml:"result>logonMinutes"`
 }
 
+// AccountCharacters returns characters attached to the account of the passed API Key.
 func (this *Client) AccountCharacters(key Key) (*AccountCharactersResponse, error) {
 	var err error
 	response := AccountCharactersResponse{}
@@ -60,15 +69,18 @@ func (this *Client) AccountCharacters(key Key) (*AccountCharactersResponse, erro
 	return &response, response.Error
 }
 
+// AccountCharactersResponse contains a list of characters in AccountCharacters.
 type AccountCharactersResponse struct {
 	Result
 	AccountCharacters AccountCharacters `xml:"result"`
 }
 
+// AccountCharacters contains a slice of AccountCharactersRow.
 type AccountCharacters struct {
 	Rows []AccountCharactersRow `xml:"rowset>row"`
 }
 
+// AccountCharactersRow contains information on a character.
 type AccountCharactersRow struct {
 	Name            string `xml:"name,attr"`
 	ID              int    `xml:"id,attr"`

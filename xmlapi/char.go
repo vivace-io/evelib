@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+// CharAccountBalance returns CharAccountResponse which contains information for each
+// account that character has access to.
 func (this *Client) CharAccountBalance(key Key, charID int) (*CharAccountResponse, error) {
 	var err error
 	response := CharAccountResponse{}
@@ -17,17 +19,22 @@ func (this *Client) CharAccountBalance(key Key, charID int) (*CharAccountRespons
 	return &response, response.Error
 }
 
+// CharAccountResponse contains general API information in addition to
+// a slice of CharAccounts.
 type CharAccountResponse struct {
 	Result
 	Accounts []CharAccount `xml:"result>rowset>row"`
 }
 
+// CharAccount contains details on an account belonging to a character.
 type CharAccount struct {
 	AccountID  int     `xml:"accountID,attr"`
 	AccountKey int     `xml:"accountKey,attr"`
 	Balance    float64 `xml:"balance,attr"`
 }
 
+// CharAssetList returns CharAssetListResponse which contains a list of all assets
+// belong to the player. If flat is set to true, assets are not nested.
 func (this *Client) CharAssetList(key Key, charID int, flat bool) (*CharAssetListResponse, error) {
 	// TODO
 	return nil, nil
@@ -37,6 +44,8 @@ type CharAssetListResponse struct {
 	// TODO
 }
 
+// CharBlueprints returns BlueprintsResponse, containing a list of blueprints
+// belonging to the character.
 func (this *Client) CharBlueprints(key Key, charID int) (*BlueprintsResponse, error) {
 	var err error
 	response := BlueprintsResponse{}

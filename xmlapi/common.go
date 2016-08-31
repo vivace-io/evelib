@@ -1,10 +1,12 @@
 package xmlapi
 
+// BlueprintsResponse contains a slice of Blueprints
 type BlueprintsResponse struct {
 	Result
 	Blueprints []Blueprint `xml:"result>rowset>row"`
 }
 
+// Blueprint contains information on a single blueprint, copy or original.
 type Blueprint struct {
 	ItemID             int    `xml:"itemID,attr"`
 	LocationID         int    `xml:"locationID,attr"`
