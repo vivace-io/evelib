@@ -3,7 +3,7 @@ package xmlapi
 func (this *Client) AccountAPIKeyInfo(key Key) (*APIKeyInfoResponse, error) {
 	var err error
 	response := APIKeyInfoResponse{}
-	err = this.fetch("/account/APIKeyInfo.xml.aspx", key, &response)
+	err = this.fetch("/account/APIKeyInfo.xml.aspx", nil, key, &response)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +35,7 @@ type APIKeyInfoRow struct {
 func (this *Client) AccountStatus(key Key) (*AccountStatus, error) {
 	var err error
 	response := AccountStatus{}
-	err = this.fetch("/account/AccountStatus.xml.aspx", key, &response)
+	err = this.fetch("/account/AccountStatus.xml.aspx", nil, key, &response)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ type AccountStatus struct {
 func (this *Client) AccountCharacters(key Key) (*AccountCharactersResponse, error) {
 	var err error
 	response := AccountCharactersResponse{}
-	err = this.fetch("/account/Characters.xml.aspx", key, &response)
+	err = this.fetch("/account/Characters.xml.aspx", nil, key, &response)
 	if err != nil {
 		return nil, err
 	}

@@ -40,9 +40,11 @@ type Result struct {
 	CachedUntil eTime     `xml:"cachedUntil"`
 }
 
-func (this *Client) fetch(path string, key Key, model interface{}) error {
+func (this *Client) fetch(path string, args url.Values, key Key, model interface{}) error {
 	uri := this.Server + path
-	args := url.Values{}
+	if args == nil {
+		args = url.Values{}
+	}
 	args.Set("keyID", key.ID)
 	args.Set("vCode", key.VCode)
 	resp, err := http.PostForm(uri, args)
