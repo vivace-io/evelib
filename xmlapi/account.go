@@ -31,3 +31,25 @@ type APIKeyInfoRow struct {
 	FactionID       int    `xml:"factionID,attr"`
 	FactionName     string `xml:"factionName,attr"`
 }
+
+func (this *Client) AccountStatus(key Key) (*AccountStatusResponse, error) {
+	var err error
+	response := AccountStatusResponse{}
+	err = this.fetch("/account/AccountStatus.xml.aspx", key, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+}
+
+type AccountStatusResponse struct {
+	Result
+	AccountStatus AccountStatus `xml:"result"`
+}
+
+type AccountStatus struct {
+	PaidUntil    eTime `xml:"paidUntil"`
+	CreateDate   eTime `xml:"createData"`
+	LogonCount   int   `xml:"logonCount,attr"`
+	LogonMinutes int   `xml:"logonMinutes,attr"`
+}
