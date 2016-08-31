@@ -7,7 +7,7 @@ func (this *Client) AccountAPIKeyInfo(key Key) (*APIKeyInfoResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &response, err
+	return &response, response.Error
 }
 
 type APIKeyInfoResponse struct {
@@ -32,24 +32,20 @@ type APIKeyInfoRow struct {
 	FactionName     string `xml:"factionName,attr"`
 }
 
-func (this *Client) AccountStatus(key Key) (*AccountStatusResponse, error) {
+func (this *Client) AccountStatus(key Key) (*AccountStatus, error) {
 	var err error
-	response := AccountStatusResponse{}
+	response := AccountStatus{}
 	err = this.fetch("/account/AccountStatus.xml.aspx", key, &response)
 	if err != nil {
 		return nil, err
 	}
-	return &response, err
-}
-
-type AccountStatusResponse struct {
-	Result
-	AccountStatus AccountStatus `xml:"result"`
+	return &response, response.Error
 }
 
 type AccountStatus struct {
-	PaidUntil    eTime `xml:"paidUntil"`
-	CreateDate   eTime `xml:"createData"`
-	LogonCount   int   `xml:"logonCount,attr"`
-	LogonMinutes int   `xml:"logonMinutes,attr"`
+	Result
+	PaidUntil    eTime `xml:"result>paidUntil"`
+	CreateDate   eTime `xml:"result>createData"`
+	LogonCount   int   `xml:"result>logonCount"`
+	LogonMinutes int   `xml:"result>logonMinutes"`
 }
