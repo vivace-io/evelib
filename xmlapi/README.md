@@ -12,7 +12,7 @@ Package implements a client to query the Eve Online XML API
 - [ ] Character
   - [x] AccountBalance
   - [ ] AssetList
-  - [ ] Blueprints
+  - [x] Blueprints
   - [ ] Bookmarks
   - [ ] CalendarEventAttendees
   - [ ] CharacterSheet
