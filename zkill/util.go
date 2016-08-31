@@ -5,25 +5,43 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 /* zkill/util.go
  * Defines utility functions for the library
  */
 
-func checkUserAgent() error {
-	if UserAgent == "" {
-		return errors.New("UserAgent must be set")
+func queryFromOpts(opts *Options) string {
+	var result string
+	// TODO - time options
+	if opts == nil {
+		return result
 	}
-	return nil
-}
+	if opts.BeforeKillID != 0 {
+		result += "/beforeKillID/" + strconv.Itoa(opts.BeforeKillID)
+	}
+	if opts.AfterKillID != 0 {
+		result += "/afterKillID/" + strconv.Itoa(opts.AfterKillID)
+	}
+	if opts.Solo {
+		result += "/solo"
+	}
+	if opts.Kills {
+		result += "/kills"
+	}
+	if opts.Losses {
+		result += "/losses"
+	}
+	if opts.WSpace {
+		result += "/w-space"
+	}
 
-func okToRun() bool {
-	err := checkUserAgent()
-	if err != nil {
-		return false
+	// lastly, ensure trailing slash in place
+	if result != "" {
+		result += "/"
 	}
-	return true
+	return result
 }
 
 func fetch(path string, model interface{}) error {
@@ -50,4 +68,19 @@ func fetch(path string, model interface{}) error {
 		return err
 	}
 	return errors.New("UserAgent not set")
+}
+
+func checkUserAgent() error {
+	if UserAgent == "" {
+		return errors.New("UserAgent must be set")
+	}
+	return nil
+}
+
+func okToRun() bool {
+	err := checkUserAgent()
+	if err != nil {
+		return false
+	}
+	return true
 }
