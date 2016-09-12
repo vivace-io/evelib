@@ -12,9 +12,8 @@ import "testing"
  * ************************************************************************************/
 func TestSolarSystems(t *testing.T) {
 	t.Parallel()
-	start := queryCount
 	// [1] SolarSystems(false)
-	systems, err := SolarSystems(false)
+	systems, err := testClient.SolarSystems(false)
 	if err != nil {
 		t.Errorf("error returned: %v", err)
 	}
@@ -40,7 +39,6 @@ func TestSolarSystems(t *testing.T) {
 		}
 	}
 	*/
-	t.Logf("[NOTIFY] TestSolarSystems - Executed %v Queries.", queryCount-start)
 
 }
 
@@ -48,7 +46,7 @@ func TestGetSolarSystem(t *testing.T) {
 	sysID := 30000142
 	sysName := "Jita"
 	// []GetSolarSystem(sysID, false)
-	system, err := GetSolarSystem(sysID, false)
+	system, err := testClient.GetSolarSystem(sysID)
 	if err != nil {
 		t.Errorf("error returned: %v", err)
 	}

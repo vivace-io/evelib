@@ -1,35 +1,26 @@
 package crest
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
 // Types (https://crest-tq.eveonline.com/inventory/types/)
 // Returns all Types from Eve Online. If `complete` is true, it will fill all
 // missing information for each type.
-func Types(complete bool) (result []*Type, err error) {
+func (c *Client) Types(complete bool) (result []*Type, err error) {
 	collection := typeCollection{}
-	err = fetch("inventory/types/", &collection)
+	err = c.get("inventory/types/", &collection)
 	if err != nil {
 		return
 	}
 	result = append(result, collection.Items...)
 	for collection.Next.Href != "" {
-		err = fetch("types/", &collection)
+		err = c.get("types/", &collection)
 		if err != nil {
 			err = fmt.Errorf("unable to pull all item types with error %v", err)
 			return
 		}
 	}
 	if complete {
-		for _, r := range result {
-			err = r.Complete()
-			if err != nil {
-				err = fmt.Errorf("models may be uncomplete - unable to complete item type with error %v", err)
-				return
-			}
-		}
+		// TODO
 	}
 	return
 }
@@ -46,16 +37,6 @@ type Type struct {
 	Mass        float32 `json:"mass"`
 	PortionSize float32 `json:"portionSize"`
 	Href        string  `json:"href"`
-}
-
-func (this *Type) Complete() error {
-	if this.Href == "" {
-		if this.ID == 0 {
-			return errors.New("unable to complete item type model - href and ID are unspecified")
-		}
-		return fetch(fmt.Sprintf("inventory/types/%v/", this.ID), this)
-	}
-	return fetch(this.Href, this)
 }
 
 // typeCollection is an intermediate object for walking pages to retrieve all

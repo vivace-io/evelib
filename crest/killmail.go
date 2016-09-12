@@ -2,8 +2,8 @@ package crest
 
 import "fmt"
 
-func GetKillmail(id int, hash string) (result *Killmail, err error) {
-	err = fetch(fmt.Sprintf("killmails/%v/%v/", id, hash), &result)
+func (c *Client) GetKillmail(id int, hash string) (result *Killmail, err error) {
+	err = c.get(fmt.Sprintf("killmails/%v/%v/", id, hash), &result)
 	return
 }
 

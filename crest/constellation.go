@@ -1,33 +1,25 @@
 package crest
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
 // Constellations returns a list of all constellations. If parameter `complete`
 // is set to true, each constellation's endpoint will be visited once.
-func Constellations(complete bool) (result []*Constellation, err error) {
+func (c *Client) Constellations(complete bool) (result []*Constellation, err error) {
 	collection := constellationCollection{}
-	err = fetch("constellations/", &collection)
+	err = c.get("constellations/", &collection)
 	if err != nil {
 		return
 	}
 	result = collection.Items
 	if complete {
-		for _, r := range result {
-			err = r.Complete()
-			if err != nil {
-				return
-			}
-		}
+		// TODO
 	}
 	return
 }
 
 // GetConstellation returns the constellation with a matching ID
-func GetConstellation(id int) (result *Constellation, err error) {
-	err = fetch(fmt.Sprintf("constellations/%v/", id), result)
+func (c *Client) GetConstellation(id int) (result *Constellation, err error) {
+	err = c.get(fmt.Sprintf("constellations/%v/", id), result)
 	return
 }
 
@@ -39,32 +31,6 @@ type Constellation struct {
 	Postion *Position      `json:"position"`
 	Region  *Region        `json:"region"`
 	Systems []*SolarSystem `json:"systems"`
-}
-
-// Complete fills/updates the region model, but does not walk its SolarSystems.
-func (this *Constellation) Complete() error {
-	if this.Href == "" {
-		if this.ID == 0 {
-			return errors.New("unable to fill constellation data - href and ID are unspecified.")
-		}
-		return fetch(fmt.Sprintf("constellations/%v/", this.ID), this)
-	}
-	return fetch(this.Href, this)
-}
-
-// Walk visits the endpoint of each constellation in the constellation and fills/updates it.
-func (this *Constellation) Walk() error {
-	if len(this.Systems) == 0 {
-		return errors.New("unable to walk constellation model systems - no systems in constellation")
-	}
-	for _, s := range this.Systems {
-		err := s.Complete()
-		if err != nil {
-			return fmt.Errorf("unable to completely walk constellation's systems - system %v failed to walk with error %v", s.ID, err)
-		}
-		s.Constellation = this
-	}
-	return nil
 }
 
 // constellationCollection is an intermediate object for walking pages to retrieve all

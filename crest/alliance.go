@@ -19,7 +19,7 @@ type Alliance struct {
 	Corporations        []*Corporation `json:"corporations"`
 }
 
-func GetAlliance(id int) (result *Alliance, err error) {
-	err = fetch(fmt.Sprintf("alliances/%v/", id), &result)
+func (c *Client) GetAlliance(id int) (result *Alliance, err error) {
+	err = c.get(fmt.Sprintf("alliances/%v/", id), &result)
 	return
 }

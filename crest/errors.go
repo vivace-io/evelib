@@ -10,6 +10,10 @@ import (
 
 var (
 	ErrCRESTUnmarshal = errors.New("unexpected error unmarshalling CREST response")
+	ErrUserAgent      = errors.New("user agent must be specified")
+	ErrCRESTURI       = errors.New("CREST root URI must be specified")
+	ErrRateDomain     = errors.New("the give rate must be within a domain of [1, 150]")
+	ErrBurstDomain    = errors.New("the given burst must be within a domain of [150, 400]")
 )
 
 // ErrorCREST represents an error returned by CREST

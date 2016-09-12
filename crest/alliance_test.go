@@ -6,7 +6,7 @@ func TestGetAlliance(t *testing.T) {
 	t.Parallel()
 	// Wrong Hole. [99006213]
 	// https://crest-tq.eveonline.com/alliances/99006213/
-	result, err := GetAlliance(99006213)
+	result, err := testClient.GetAlliance(99006213)
 	if err != nil {
 		t.Error(err)
 	}
