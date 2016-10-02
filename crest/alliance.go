@@ -1,9 +1,13 @@
 package crest
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // Alliance in Eve
 type Alliance struct {
+	Client              *Client        `json:"-"`
 	ID                  int            `json:"id"`
 	Name                string         `json:"name"`
 	ShortName           string         `json:"shortName"`
@@ -19,7 +23,24 @@ type Alliance struct {
 	Corporations        []*Corporation `json:"corporations"`
 }
 
-func (c *Client) GetAlliance(id int) (result *Alliance, err error) {
+func (alli *Alliance) Complete() (err error) {
+	if alli.Client != nil {
+		// TODO
+	} else {
+		err = errors.New("the Alliance model cannot be completed as Alliance.Client is nil")
+	}
+	return
+}
+
+func (c *Client) Alliance(id int) (result *Alliance, err error) {
 	err = c.get(fmt.Sprintf("alliances/%v/", id), &result)
+	if result != nil {
+		result.Client = c
+	}
+	return
+}
+
+func (c *Client) AllAlliances() (result []*Alliance, err error) {
+	// TODO
 	return
 }

@@ -3,7 +3,7 @@ package crest
 import "testing"
 
 func TestConstellations(t *testing.T) {
-	result, err := testClient.Constellations(false)
+	result, err := testClient.AllConstellations()
 	if err != nil {
 		t.Error(err)
 	}

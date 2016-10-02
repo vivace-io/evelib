@@ -2,11 +2,11 @@ package crest
 
 import "testing"
 
-func TestGetAlliance(t *testing.T) {
+func TestAlliance(t *testing.T) {
 	t.Parallel()
 	// Wrong Hole. [99006213]
 	// https://crest-tq.eveonline.com/alliances/99006213/
-	result, err := testClient.GetAlliance(99006213)
+	result, err := testClient.Alliance(99006213)
 	if err != nil {
 		t.Error(err)
 	}
@@ -19,4 +19,12 @@ func TestGetAlliance(t *testing.T) {
 	if len(result.Corporations) != result.CorporationsCount {
 		t.Errorf("member corporation mismatch - %v member corporations listed, with %v counted for", len(result.Corporations), result.CorporationsCount)
 	}
+}
+
+func TestAllianceComplete(t *testing.T) {
+	// TODO
+}
+
+func TestAllAlliances(t *testing.T) {
+	// TODO
 }
