@@ -15,6 +15,7 @@ const (
 	SingularityURI   = "https://api-sisi.testeveonline.com/"
 	MaxRateSustained = 150
 	MaxRateBurst     = 400
+	CRESTVersion     = "application/vnd.ccp.eve.Api-v2+json"
 )
 
 type Client struct {
@@ -53,6 +54,7 @@ func (c *Client) get(path string, model interface{}) (err error) {
 			return
 		}
 		request.Header.Add("User-Agent", c.UserAgent)
+		request.Header.Add("Accept", CRESTVersion)
 
 		webClient := &http.Client{
 			Transport: &http.Transport{

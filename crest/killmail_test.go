@@ -13,7 +13,7 @@ func TestGetKillMail(t *testing.T) {
 	t.Parallel()
 	// Zkillboard - https://zkillboard.com/kill/55214047/
 	// CREST - https://crest-tq.eveonline.com/killmails/55214047/4d78d27888c789fef959f59c6e417ed91ad4c502/
-	id := 55214047
+	id := uint(55214047)
 	hash := "4d78d27888c789fef959f59c6e417ed91ad4c502"
 	kill, err := testClient.GetKillmail(id, hash)
 	if err != nil {
