@@ -2,7 +2,7 @@ package crest
 
 import "fmt"
 
-func (c *Client) GetKillmail(id uint, hash string) (result *Killmail, err error) {
+func (c *Client) GetKillmail(id int, hash string) (result *Killmail, err error) {
 	err = c.get(fmt.Sprintf("killmails/%v/%v/", id, hash), &result)
 	if err == nil {
 		// Only assign hash on success.
@@ -14,7 +14,7 @@ func (c *Client) GetKillmail(id uint, hash string) (result *Killmail, err error)
 // Killmail from a kill
 type Killmail struct {
 	SolarSystem   *SolarSystem `json:"solarSystem"`
-	KillID        uint         `json:"killID"`
+	KillID        int          `json:"killID"`
 	KillHash      string       `json:"killHash"`
 	TimestampStr  string       `json:"killTime"`
 	Attackers     []*Attacker  `json:"attackers"`
