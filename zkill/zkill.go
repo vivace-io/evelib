@@ -1,6 +1,9 @@
 package zkill
 
 import (
+	"encoding/json"
+	"errors"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -34,16 +37,47 @@ func NewClient(address, userAgent string) (client *Client) {
 	client = &Client{
 		UserAgent: userAgent,
 		Server:    address,
-		clear:     make(chan bool, 100),
 	}
 	client.manage()
 	return
 }
 
-func (this *Client) manage() {
+func (c *Client) fetch(path string, model interface{}) error {
+	select {
+	case <-c.clear:
+		request, err := http.NewRequest("GET", c.Server+path, nil)
+		if err != nil {
+			return err
+		}
+		if c.UserAgent == "" {
+			return errors.New("UserAgent not set")
+		}
+		request.Header.Add("User-Agent", c.UserAgent)
+
+		client := &http.Client{}
+		rawresp, err := client.Do(request)
+		defer rawresp.Body.Close()
+		if err != nil {
+			return err
+		}
+		var body []byte
+		body, err = ioutil.ReadAll(rawresp.Body)
+		if err != nil {
+			return err
+		}
+
+		err = json.Unmarshal(body, &model)
+		return err
+	}
+}
+
+func (c *Client) manage() {
+	if c.clear == nil || len(clear) != 100 {
+		c.clear = make(chan bool, 100)
+	}
 	go func() {
 		for {
-			this.clear <- true
+			c.clear <- true
 			time.Sleep(10 * time.Millisecond)
 		}
 	}()
@@ -64,9 +98,9 @@ type Options struct {
 
 // Kill is contains the CREST Killmail and zKillboard's extra data.
 type Kill struct {
-	KillID   int            `json:"killID"`
-	Zkb      Zkb            `json:"zkb"`
-	Killmail crest.Killmail `json:"killmail"`
+	KillID   int             `json:"killID"`
+	Zkb      Zkb             `json:"zkb"`
+	Killmail *crest.Killmail `json:"killmail"`
 }
 
 // Zkb is the extra data returned from zKillboard's API

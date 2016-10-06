@@ -94,6 +94,9 @@ func (this *RedisQClient) fetch() (k Kill, err error) {
 	zresp := redisqResp{}
 	err = json.Unmarshal(body, &zresp)
 	k = zresp.Kill
+	if k.Killmail != nil {
+		k.Killmail.KillHash = k.Zkb.Hash
+	}
 	return
 }
 
