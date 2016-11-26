@@ -10,43 +10,23 @@ import "testing"
  * FAIL - If either an error is returned or any number of items other than 8035       *
  *        is returned.                                                                *
  * ************************************************************************************/
-func TestSolarSystems(t *testing.T) {
+func TestSolarSystemsGetAll(t *testing.T) {
 	t.Parallel()
 	// [1] SolarSystems(false)
-	systems, err := testClient.SolarSystems(false)
+	systems, err := testClient.SolarSystemsGetAll()
 	if err != nil {
 		t.Errorf("error returned: %v", err)
 	}
 	if len(systems) != 8035 {
 		t.Errorf("expected 8035 items returned but got %v", len(systems))
 	}
-
-	// [2] SolarSystems(true)
-	/* PROCESS TOO LONG!
-	systems, err = SolarSystems(true)
-	if err != nil {
-		t.Errorf("error returned: %v", err)
-	}
-	if len(systems) != 8035 {
-		t.Errorf("expected 8035 items returned but got %v", len(systems))
-	}
-	for _, s := range systems {
-		if s.Position == nil {
-			t.Errorf("position of system %v[%v] is unexpectedly nil", s.Name, s.ID)
-		}
-		if len(s.Planets) == 0 {
-			t.Errorf("no planets returned in system %v[%v]", s.Name, s.ID)
-		}
-	}
-	*/
-
 }
 
-func TestGetSolarSystem(t *testing.T) {
+func TestSolarSystemsGet(t *testing.T) {
 	sysID := 30000142
 	sysName := "Jita"
 	// []GetSolarSystem(sysID, false)
-	system, err := testClient.GetSolarSystem(sysID)
+	system, err := testClient.SolarSystemsGet(sysID)
 	if err != nil {
 		t.Errorf("error returned: %v", err)
 	}

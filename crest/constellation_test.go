@@ -2,8 +2,8 @@ package crest
 
 import "testing"
 
-func TestConstellations(t *testing.T) {
-	result, err := testClient.GetAllConstellations()
+func TestConstellationsGetAll(t *testing.T) {
+	result, err := testClient.ConstellationsGetAll()
 	if err != nil {
 		t.Error(err)
 	}

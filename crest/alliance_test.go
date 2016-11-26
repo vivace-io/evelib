@@ -2,11 +2,11 @@ package crest
 
 import "testing"
 
-func TestAlliance(t *testing.T) {
+func TestAlliancesGet(t *testing.T) {
 	t.Parallel()
 	// Wrong Hole. [99006213]
 	// https://crest-tq.eveonline.com/alliances/99006213/
-	result, err := testClient.Alliance(99006213)
+	result, err := testClient.AlliancesGet(99006213)
 	if err != nil {
 		t.Error(err)
 	}
@@ -21,10 +21,6 @@ func TestAlliance(t *testing.T) {
 	}
 }
 
-func TestAllianceComplete(t *testing.T) {
-	// TODO
-}
-
-func TestAllAlliances(t *testing.T) {
+func TestAlliancesGetAll(t *testing.T) {
 	// TODO
 }

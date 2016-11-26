@@ -2,10 +2,10 @@ package crest
 
 import "fmt"
 
-// Types (https://crest-tq.eveonline.com/inventory/types/)
+// TypesGetAll (https://crest-tq.eveonline.com/inventory/types/)
 // Returns all Types from Eve Online. If `complete` is true, it will fill all
 // missing information for each type.
-func (c *Client) Types(complete bool) (result []Type, err error) {
+func (c *Client) TypesGetAll() (result []Type, err error) {
 	collection := typeCollection{}
 	err = c.get("inventory/types/", &collection)
 	if err != nil {
@@ -18,9 +18,6 @@ func (c *Client) Types(complete bool) (result []Type, err error) {
 			err = fmt.Errorf("unable to pull all item types with error %v", err)
 			return
 		}
-	}
-	if complete {
-		// TODO
 	}
 	return
 }

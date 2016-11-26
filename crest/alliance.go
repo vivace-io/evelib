@@ -2,6 +2,19 @@ package crest
 
 import "fmt"
 
+// AlliancesGet returns an alliance with the id matching the parameter, if any.
+func (c *Client) AlliancesGet(id int) (result Alliance, err error) {
+	err = c.get(fmt.Sprintf("alliances/%v/", id), &result)
+	return
+}
+
+// AlliancesGetAll returns all known alliances in the game.
+func (c *Client) AlliancesGetAll() (result []*Alliance, err error) {
+	// TODO
+	err = ErrNotImplemented
+	return
+}
+
 // Alliance in Eve
 type Alliance struct {
 	ID                  int           `json:"id"`
@@ -17,14 +30,4 @@ type Alliance struct {
 	URL                 string        `json:"url"`
 	CreatorCharacter    Character     `json:"creatorCharacter"`
 	Corporations        []Corporation `json:"corporations"`
-}
-
-func (c *Client) Alliance(id int) (result Alliance, err error) {
-	err = c.get(fmt.Sprintf("alliances/%v/", id), &result)
-	return
-}
-
-func (c *Client) AllAlliances() (result []*Alliance, err error) {
-	// TODO
-	return
 }

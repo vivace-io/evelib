@@ -2,22 +2,19 @@ package crest
 
 import "strconv"
 
-// Regions returns all regions in Eve. If parameter `complete` is set to true, the
-// method will visit each individual system endpoint and gather full data.
-func (c *Client) Regions(complete bool) (result []Region, err error) {
+// RegionsGetAll returns all regions in Eve.
+func (c *Client) RegionsGetAll() (result []Region, err error) {
 	collection := regionCollection{}
 	err = c.get("regions/", &collection)
 	if err != nil {
 		return
 	}
 	result = collection.Items
-	if complete {
-		// TODO
-	}
 	return
 }
 
-func (c *Client) GetRegion(id int) (result Region, err error) {
+// RegionsGet returns a region that matches the `id` parameter, if it exists.
+func (c *Client) RegionsGet(id int) (result Region, err error) {
 	err = c.get("regions/"+strconv.Itoa(id)+"/", &result)
 	return
 }

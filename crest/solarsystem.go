@@ -2,21 +2,19 @@ package crest
 
 import "fmt"
 
-// SolarSystems returns all system in Eve with partial data.
-func (c *Client) SolarSystems(complete bool) (systems []*SolarSystem, err error) {
+// SolarSystemsGetAll returns all solar systems in the game.
+func (c *Client) SolarSystemsGetAll() (systems []*SolarSystem, err error) {
 	collection := systemCollection{}
 	err = c.get("solarsystems/", &collection)
 	if err != nil {
 		return
 	}
 	systems = collection.Items
-	if complete {
-		// TODO
-	}
 	return
 }
 
-func (c *Client) GetSolarSystem(id int) (system *SolarSystem, err error) {
+// SolarSystemsGet returns a solar system that matches the `id` parameter.
+func (c *Client) SolarSystemsGet(id int) (system *SolarSystem, err error) {
 	err = c.get(fmt.Sprintf("solarsystems/%v/", id), &system)
 	if err != nil {
 		return

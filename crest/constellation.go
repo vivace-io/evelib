@@ -2,6 +2,23 @@ package crest
 
 import "fmt"
 
+// ConstellationsGetAll returns a list of all constellations.
+func (c *Client) ConstellationsGetAll() (result []Constellation, err error) {
+	collection := constellationCollection{}
+	err = c.get("constellations/", &collection)
+	if err != nil {
+		return
+	}
+	result = collection.Items
+	return
+}
+
+// ConstellationsGet returns a constellation with a matching ID, if it exists.
+func (c *Client) ConstellationsGet(id int) (result Constellation, err error) {
+	err = c.get(fmt.Sprintf("constellations/%v/", id), &result)
+	return
+}
+
 // Constellation represents a constellation in Eve
 type Constellation struct {
 	Name    string         `json:"name"`
@@ -16,22 +33,4 @@ type Constellation struct {
 // constellations from a CREST endpoint.
 type constellationCollection struct {
 	Items []Constellation `json:"items"`
-}
-
-// GetAllConstellations returns a list of all constellations. If parameter `complete`
-// is set to true, each constellation's endpoint will be visited once.
-func (c *Client) GetAllConstellations() (result []Constellation, err error) {
-	collection := constellationCollection{}
-	err = c.get("constellations/", &collection)
-	if err != nil {
-		return
-	}
-	result = collection.Items
-	return
-}
-
-// GetConstellation returns the constellation with a matching ID
-func (c *Client) GetConstellation(id int) (result Constellation, err error) {
-	err = c.get(fmt.Sprintf("constellations/%v/", id), &result)
-	return
 }

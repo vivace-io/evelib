@@ -2,7 +2,7 @@ package crest
 
 import "fmt"
 
-func (c *Client) GetKillmail(id int, hash string) (result *Killmail, err error) {
+func (c *Client) KillmailGet(id int, hash string) (result *Killmail, err error) {
 	err = c.get(fmt.Sprintf("killmails/%v/%v/", id, hash), &result)
 	if err == nil {
 		// Only assign hash on success.
