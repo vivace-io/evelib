@@ -1,7 +1,5 @@
 package crest
 
-import "fmt"
-
 // Sovereignty model
 type Sovereignty struct {
 	ID   int    `json:"id"`
@@ -12,14 +10,13 @@ type Sovereignty struct {
 /***** LOCATION DEFINITIONS *****/
 
 type Stargate struct {
-	ID          int          `json:"id"`
-	Href        string       `json:"href"`
-	Name        string       `json:"name"`
-	System      *SolarSystem `json:"system"`
-	Position    Position     `json:"position"`
-	Destination *SolarSystem `json:"destination"`
-	Stargate    *Stargate    `json:"stargate"`
-	Type        Type         `json:"type"`
+	ID          int         `json:"id"`
+	Href        string      `json:"href"`
+	Name        string      `json:"name"`
+	System      SolarSystem `json:"system"`
+	Position    Position    `json:"position"`
+	Destination SolarSystem `json:"destination"`
+	Type        Type        `json:"type"`
 }
 
 // Position represents a 3D Cartesian position in Eve
@@ -34,15 +31,6 @@ type Location struct {
 	ID   int    `json:"id"`
 	Href string `json:"href"`
 	Name string `json:"name"`
-}
-
-// UnexpectedHTTPError for all HTTP status code errors not covered.
-type UnexpectedHTTPError struct {
-	StatusCode int
-}
-
-func (e UnexpectedHTTPError) Error() string {
-	return fmt.Sprintf("unexpected HTTP status code %v", e.StatusCode)
 }
 
 /***** ETC. DEFINITIONS *****/

@@ -5,7 +5,7 @@ import "fmt"
 // Types (https://crest-tq.eveonline.com/inventory/types/)
 // Returns all Types from Eve Online. If `complete` is true, it will fill all
 // missing information for each type.
-func (c *Client) Types(complete bool) (result []*Type, err error) {
+func (c *Client) Types(complete bool) (result []Type, err error) {
 	collection := typeCollection{}
 	err = c.get("inventory/types/", &collection)
 	if err != nil {
@@ -42,8 +42,8 @@ type Type struct {
 // typeCollection is an intermediate object for walking pages to retrieve all
 // types from a CREST endpoint
 type typeCollection struct {
-	PageCount int     `json:"pageCount"`
-	Items     []*Type `json:"items"`
+	PageCount int    `json:"pageCount"`
+	Items     []Type `json:"items"`
 	Next      struct {
 		Href string `json:"href"`
 	} `json:"next, omitempty"`
@@ -60,8 +60,8 @@ type Group struct {
 
 // Category represents an inventory category.
 type Category struct {
-	Name      string   `json:"name"`
-	Groups    []*Group `json:"groups"`
-	Href      string   `json:"href"`
-	Published bool     `json:"published"`
+	Name      string  `json:"name"`
+	Groups    []Group `json:"groups"`
+	Href      string  `json:"href"`
+	Published bool    `json:"published"`
 }

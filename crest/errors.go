@@ -16,6 +16,15 @@ var (
 	ErrBurstDomain    = errors.New("the given burst must be within a domain of [150, 400]")
 )
 
+// ErrorHTTPStatus for all HTTP status code errors not covered.
+type ErrorHTTPStatus struct {
+	StatusCode int
+}
+
+func (e ErrorHTTPStatus) Error() string {
+	return fmt.Sprintf("unexpected HTTP status code %v", e.StatusCode)
+}
+
 // ErrorCREST represents an error returned by CREST
 type ErrorCREST struct {
 	StatusCode    int    `json:"statusCode"`
