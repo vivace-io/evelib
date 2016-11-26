@@ -2,14 +2,14 @@ package crest
 
 import "testing"
 
-/* TestGetttKillMail
+/* TestKillmailGet
  * ***********************************************************************************
- * EXECUTE: GetKillmail(id, hash) to fetch one or more killmails                     *
+ * EXECUTE: KillmailGet(id, hash) to fetch a killmail.                               *
  * ***********************************************************************************
  * PASS - If no error is returned, result data is as expected                        *
- * FAIL - If either an unexpected error is retured or result data is not as expected *
+ * FAIL - If either an unexpected error is retured or result data is not as expected.*
  * ***********************************************************************************/
-func TestGetKillmail(t *testing.T) {
+func TestKillmailGet(t *testing.T) {
 	t.Parallel()
 	// Zkillboard - https://zkillboard.com/kill/55214047/
 	// CREST - https://crest-tq.eveonline.com/killmails/55214047/4d78d27888c789fef959f59c6e417ed91ad4c502/

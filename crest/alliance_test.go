@@ -2,6 +2,13 @@ package crest
 
 import "testing"
 
+/* TestAlliancesGet
+ * ************************************************************************************
+ * EXECUTE: AlliancesGet to call /alliances/{id}/ for basic alliance information.     *
+ * ************************************************************************************
+ * PASS - If no error is returned, and result contain expected values.                *
+ * FAIL - If either an error is returned or result contains unexpected values.        *
+ * ************************************************************************************/
 func TestAlliancesGet(t *testing.T) {
 	t.Parallel()
 	// Wrong Hole. [99006213]

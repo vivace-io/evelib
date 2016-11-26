@@ -2,11 +2,11 @@ package crest
 
 import "testing"
 
-/* TestRegions
+/* TestRegionsGetAll
  * *********************************************************************************
- * EXECUTE: Regions(true|false) to call /regions/ for regions information          *
+ * EXECUTE: RegionsGetAll() to call /regions/ for a list of regions.               *
  * *********************************************************************************
- * PASS - If no error is returned, result data is as expected                      *
+ * PASS - If no error is returned, result data/length is as expected.              *
  * FAIL - If either an error is returned or any number of items than other 100     *
  *        is returned.                                                             *
  * *********************************************************************************/

@@ -7,6 +7,10 @@ import (
 
 var testClient *Client
 
+/* TestConstellationsGetAll
+ * ****************************************************************************
+ * Main entry point for package testing, sets up fixture(s) for testing.      *
+ * ****************************************************************************/
 func TestMain(m *testing.M) {
 	testClient = NewClient("EveLib Testing Agent", TranquilityURI, 150, 400)
 

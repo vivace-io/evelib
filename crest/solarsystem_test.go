@@ -2,11 +2,11 @@ package crest
 
 import "testing"
 
-/* TestSolarSystems
+/* TestSolarSystemsGetAll
  * ************************************************************************************
- * EXECUTE: SolarSystems(true/false) to call /solarsystems/ for system information    *
+ * EXECUTE: SolarSystemsGetAll to call /solarsystems/ for basic system information.   *
  * ************************************************************************************
- * PASS - If no error is returned, and 8035 systems                                   *
+ * PASS - If no error is returned, and results contain 8035 systems.                  *
  * FAIL - If either an error is returned or any number of items other than 8035       *
  *        is returned.                                                                *
  * ************************************************************************************/
@@ -22,10 +22,16 @@ func TestSolarSystemsGetAll(t *testing.T) {
 	}
 }
 
+/* TestSolarSystemsGet
+ * ************************************************************************************
+ * EXECUTE: SolarSystemsGet to call /solarsystems/{systemID} for system information.  *
+ * ************************************************************************************
+ * PASS - If no error is returned, and returned system contains expected values.      *
+ * FAIL - If either an error is returned or result values are unexpected.             *
+ * ************************************************************************************/
 func TestSolarSystemsGet(t *testing.T) {
 	sysID := 30000142
 	sysName := "Jita"
-	// []GetSolarSystem(sysID, false)
 	system, err := testClient.SolarSystemsGet(sysID)
 	if err != nil {
 		t.Errorf("error returned: %v", err)
