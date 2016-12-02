@@ -42,17 +42,17 @@ func NewClient(address, userAgent string) (client *Client) {
 	return
 }
 
-func (c *Client) fetch(path string, model interface{}) error {
+func (client *Client) fetch(path string, model interface{}) error {
 	select {
-	case <-c.clear:
-		request, err := http.NewRequest("GET", c.Server+path, nil)
+	case <-client.clear:
+		request, err := http.NewRequest("GET", client.Server+path, nil)
 		if err != nil {
 			return err
 		}
-		if c.UserAgent == "" {
+		if client.UserAgent == "" {
 			return errors.New("UserAgent not set")
 		}
-		request.Header.Add("User-Agent", c.UserAgent)
+		request.Header.Add("User-Agent", client.UserAgent)
 
 		client := &http.Client{}
 		rawresp, err := client.Do(request)
@@ -71,13 +71,13 @@ func (c *Client) fetch(path string, model interface{}) error {
 	}
 }
 
-func (c *Client) manage() {
-	if c.clear == nil || len(clear) != 100 {
-		c.clear = make(chan bool, 100)
+func (client *Client) manage() {
+	if client.clear == nil || len(clear) != 100 {
+		client.clear = make(chan bool, 100)
 	}
 	go func() {
 		for {
-			c.clear <- true
+			client.clear <- true
 			time.Sleep(10 * time.Millisecond)
 		}
 	}()
