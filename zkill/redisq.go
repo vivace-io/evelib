@@ -9,12 +9,14 @@ import (
 	"time"
 )
 
+// RedisQReciever is a function that accepts a RedisQ kill.
 type RedisQReciever func(Kill)
 
 type redisqResp struct {
 	Kill Kill `json:"package"`
 }
 
+// RedisQClient is a client to ZKillboard's RedisQ service.
 type RedisQClient struct {
 	UserAgent string
 	locker    *sync.RWMutex
@@ -35,40 +37,40 @@ func NewRedisQClient(userAgent string) (client *RedisQClient) {
 // AddChannel registers a channel to be sent all future kills from RedisQ. Bear
 // in mind that the RedisQClient will start a new goroutine for each channel
 // added when pushing the Kill to the channel, so if the channel is not being
-// emptied fast enough or is in deadlock, the program implementing this client
+// emptied fast enough or is in deadlock, the program implementing client client
 // will likely crash and burn. Safe for asynchronous use.
-func (this *RedisQClient) AddChannel(output chan Kill) {
-	this.locker.Lock()
-	defer this.locker.Unlock()
-	this.channels = append(this.channels, output)
+func (client *RedisQClient) AddChannel(output chan Kill) {
+	client.locker.Lock()
+	defer client.locker.Unlock()
+	client.channels = append(client.channels, output)
 }
 
 // AddReciever registers a function of type RedisQReciever to be sent all future
 // kills from RedisQ. Bear in mind that the clien will send the kill in a
 // seperate goroutine for each reciever, so if the funcion takes too long/hangs
 // the program will quickly become bloated and crash. Safe for asynchronous use.
-func (this *RedisQClient) AddReciever(reciever RedisQReciever) {
-	this.locker.Lock()
-	defer this.locker.Unlock()
-	this.recievers = append(this.recievers, reciever)
+func (client *RedisQClient) AddReciever(reciever RedisQReciever) {
+	client.locker.Lock()
+	defer client.locker.Unlock()
+	client.recievers = append(client.recievers, reciever)
 }
 
 // Start listening to RedisQ. Once started, does not block.
-func (this *RedisQClient) Start() error {
-	if this.running {
+func (client *RedisQClient) Start() error {
+	if client.running {
 		return errors.New("already watching redisq")
 	}
-	this.running = true
+	client.running = true
 	go func() {
-		for this.running {
-			kill, err := this.fetch()
+		for client.running {
+			kill, err := client.fetch()
 			if err != nil {
 				// Usually if an error is encountered, it's a connection issue. So
-				// ease back and wait for a minute when this happens and retry after.
-				this.logError(err)
+				// ease back and wait for a minute when client happens and retry after.
+				client.logError(err)
 				time.Sleep(1 * time.Minute)
 			} else {
-				this.send(kill)
+				client.send(kill)
 			}
 		}
 	}()
@@ -78,29 +80,29 @@ func (this *RedisQClient) Start() error {
 // SetErrorChannel takes a channel of any size and asynchronously sends it
 // all errors RedisQ experiences while running. Errors are sent on a seperate
 // goroutine, but take care that the channel never fills for too long.
-func (this *RedisQClient) SetErrorChannel(errChan chan error) {
-	this.errc = errChan
+func (client *RedisQClient) SetErrorChannel(errChan chan error) {
+	client.errc = errChan
 }
 
 // Stop RedisQ from retrieving any more kills.
-func (this *RedisQClient) Stop() {
-	this.running = false
+func (client *RedisQClient) Stop() {
+	client.running = false
 }
 
-func (this *RedisQClient) send(k Kill) {
-	this.locker.RLock()
-	defer this.locker.RUnlock()
-	for _, c := range this.channels {
+func (client *RedisQClient) send(k Kill) {
+	client.locker.RLock()
+	defer client.locker.RUnlock()
+	for _, c := range client.channels {
 		go func() {
 			c <- k
 		}()
 	}
-	for _, r := range this.recievers {
+	for _, r := range client.recievers {
 		go r(k)
 	}
 }
 
-func (this *RedisQClient) fetch() (k Kill, err error) {
+func (client *RedisQClient) fetch() (k Kill, err error) {
 	webc := &http.Client{}
 	request, err := http.NewRequest("GET", DefaultRedisQURI, nil)
 	if err != nil {
@@ -127,10 +129,10 @@ func (this *RedisQClient) fetch() (k Kill, err error) {
 	return
 }
 
-func (this *RedisQClient) logError(err error) {
-	if this.errc != nil {
+func (client *RedisQClient) logError(err error) {
+	if client.errc != nil {
 		go func() {
-			this.errc <- err
+			client.errc <- err
 		}()
 	}
 }
