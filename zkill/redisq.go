@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
-	"log"
 	"net/http"
+	"time"
 )
 
 type RedisQReciever func(Kill)
@@ -37,7 +37,10 @@ func (this *RedisQClient) Start() error {
 		for this.running {
 			kill, err := this.fetch()
 			if err != nil {
+				// Usually if an error is encountered, it's a connection issue. So
+				// ease back and wait for a minute when this happens and retry after.
 				this.logError(err)
+				time.Sleep(1 * time.Minute)
 			} else {
 				this.send(kill)
 			}
@@ -105,7 +108,5 @@ func (this *RedisQClient) logError(err error) {
 		go func() {
 			this.errc <- err
 		}()
-	} else {
-		log.Printf("[ERROR][REDISQ] - %v", err)
 	}
 }
