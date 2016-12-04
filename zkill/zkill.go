@@ -10,22 +10,6 @@ import (
 	"github.com/vivace-io/evelib/crest"
 )
 
-// ZKillboardAPIURI is the default URL to zKillboard API
-const (
-	// DefaultAPIAddr for zKillboard
-	DefaultAPIAddr = "https://zkillboard.com/api"
-	// DefaultRedisQURI for zKillboard's RedisQ service
-	DefaultRedisQURI = "https://redisq.zkillboard.com/listen.php"
-)
-
-var (
-	UserAgent  string
-	APIAddr    string
-	RedisQAddr string
-	clear      chan bool
-	webClient  *http.Client
-)
-
 // Client is a client to access zKillboard's API.
 type Client struct {
 	UserAgent string
@@ -72,7 +56,7 @@ func (client *Client) fetch(path string, model interface{}) error {
 }
 
 func (client *Client) manage() {
-	if client.clear == nil || len(clear) != 100 {
+	if client.clear == nil || len(client.clear) >= 150 {
 		client.clear = make(chan bool, 100)
 	}
 	go func() {
@@ -81,19 +65,6 @@ func (client *Client) manage() {
 			time.Sleep(10 * time.Millisecond)
 		}
 	}()
-}
-
-// Options is passed to query functions (i.e. CharacterKills, CorporationKills)
-// and modifies the scope of the request and the kills returned.
-// Options is passed to the client by design, as it is not required.
-type Options struct {
-	BeforeKillID int  // Returns kills before the kill ID, if set.
-	AfterKillID  int  // Returns kills after the kill ID, if set.
-	Solo         bool // Only returns solo kills if true.
-	Kills        bool // Only returns kills if true.
-	Losses       bool // Only returns losses if true.
-	WSpace       bool // Only returns w-space kills if true.
-	Limit        int  // Maximum kills returned (default 200 if not set)
 }
 
 // Kill is contains the CREST Killmail and zKillboard's extra data.
