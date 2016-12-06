@@ -15,10 +15,10 @@ func (client *Client) Historical(date time.Time) (killmails map[int]string, err 
 	var id int
 	for key, val := range results {
 		if id, err = strconv.Atoi(key); err != nil {
-			killmails[id] = val
-		} else {
-			err = fmt.Errorf("unable to conver string value '%v' to type int: %v", key, err)
+			err = fmt.Errorf("unable to convert string value '%v' to type int: %v", key, err)
 			return
+		} else {
+			killmails[id] = val
 		}
 	}
 	return
