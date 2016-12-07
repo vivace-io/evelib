@@ -18,7 +18,7 @@ func TestAlliancesGet(t *testing.T) {
 		t.Error(err)
 	}
 	if result.ID != 99006213 {
-		t.Errorf("alliance ID mismatch - expected 99006213 but got", result.ID)
+		t.Errorf("alliance ID mismatch - expected 99006213 but got %v", result.ID)
 	}
 	if result.Name != "Wrong Hole." {
 		t.Errorf("alliance name mismatch - expected \"Wrong Hole\" but got \"%v\"", result.Name)

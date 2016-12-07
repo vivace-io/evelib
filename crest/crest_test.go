@@ -12,10 +12,11 @@ var testClient *Client
  * Main entry point for package testing, sets up fixture(s) for testing.      *
  * ****************************************************************************/
 func TestMain(m *testing.M) {
-	testClient = NewClient("EveLib Testing Agent", TranquilityURI, 150, 400)
-
+	opts := DefaultOptions()
 	// Disable TLS verification for Continuous Integration testing.
-	testClient.TLS(false)
+	opts.DisableTLS = true
+	opts.UserAgent = "EveLib Testing Agent"
+	testClient, _ = NewClient(opts)
 	os.Exit(m.Run())
 }
 

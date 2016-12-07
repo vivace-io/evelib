@@ -1,6 +1,6 @@
 package crest
 
-// Corporation in Eve
+// Corporation model for a Corporation entity in EVE Online.
 type Corporation struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
