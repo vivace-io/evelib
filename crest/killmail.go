@@ -1,6 +1,10 @@
 package crest
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 func (c *Client) KillmailGet(id int, hash string) (result *Killmail, err error) {
 	err = c.get(fmt.Sprintf("killmails/%v/%v/", id, hash), &result)
@@ -14,12 +18,23 @@ func (c *Client) KillmailGet(id int, hash string) (result *Killmail, err error) 
 // Killmail from a kill
 type Killmail struct {
 	SolarSystem   SolarSystem `json:"solarSystem"`
+	LocationID    int         `json:"locationID"`
 	KillID        int         `json:"killID"`
 	KillHash      string      `json:"killHash"`
-	TimestampStr  string      `json:"killTime"`
+	Timestamp     KillTime    `json:"killTime"`
 	Attackers     []Attacker  `json:"attackers"`
 	AttackerCount int         `json:"attackerCount"`
 	Victim        Victim      `json:"victim"`
+	Value         float32     `json:"value"`
+}
+
+type KillTime struct {
+	time.Time
+}
+
+func (t *KillTime) UnmarshalJSON(b []byte) (err error) {
+	t.Time, err = time.Parse("2006.01.02 15:04:05", strings.Replace(string(b), "\"", "", 2))
+	return err
 }
 
 // Attacker in a killmail
