@@ -151,7 +151,9 @@ func (client *Client) fetch() (resp response, err error) {
 func (client *Client) send(payload Payload) {
 	client.locker.RLock()
 	defer client.locker.RUnlock()
-
+	payload.Killmail.Value = payload.Zkb.TotalValue
+	payload.Killmail.LocationID = payload.Zkb.LocationID
+	payload.Killmail.KillHash = payload.Zkb.Hash
 	for _, c := range client.rchan {
 		go func() {
 			c <- payload
