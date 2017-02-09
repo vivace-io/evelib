@@ -1,6 +1,9 @@
 package zkill
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestKillmailGet(t *testing.T) {
 	t.Parallel()
@@ -25,5 +28,12 @@ func TestKillmailGetError(t *testing.T) {
 }
 
 func TestHistorical(t *testing.T) {
-
+	t.Parallel()
+	result, err := testClient.Historical(time.Now())
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	if len(result) == 0 {
+		t.Error("result was unexpectedly empty")
+	}
 }
