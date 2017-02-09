@@ -7,7 +7,7 @@ import (
 
 var testClient *Client
 
-/* TestConstellationsGetAll
+/* TestMain
  * ****************************************************************************
  * Main entry point for package testing, sets up fixture(s) for testing.      *
  * ****************************************************************************/
