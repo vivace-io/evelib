@@ -28,10 +28,13 @@ type Killmail struct {
 	Value         float32     `json:"value"`
 }
 
+// KillTime embeds time.Time and implements the UnmarshalJSON interface to
+// handle CREST's non RFC 3339 timestamp.
 type KillTime struct {
 	time.Time
 }
 
+// UnmarshalJSON parses the timestamp from CREST in to Go's time.Time type.
 func (t *KillTime) UnmarshalJSON(b []byte) (err error) {
 	t.Time, err = time.Parse("2006.01.02 15:04:05", strings.Replace(string(b), "\"", "", 2))
 	return err
