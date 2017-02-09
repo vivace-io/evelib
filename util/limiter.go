@@ -45,6 +45,7 @@ func (lim *Limiter) Connect() {
 	case <-lim.clear:
 		for {
 			if lim.conn < lim.maxConn {
+				lim.conn++
 				return
 			}
 		}
