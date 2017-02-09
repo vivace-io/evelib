@@ -1,7 +1,6 @@
 package zkill
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -86,18 +85,23 @@ type Zkb struct {
 
 type killList []*Killmail
 
-func (client *Client) KillmailGet(killID int) (kill *Killmail, err error) {
+// KillmailGet takes one or more kill IDs and returns the kill(s).
+// If one or more kills are not found or could not be retrieved, an error
+// is returned.
+func (client *Client) KillmailGet(killID ...int) (result []*Killmail, err error) {
 	var list killList
-	err = client.fetch(fmt.Sprintf("/killID/%v/", killID), &list)
-	if err != nil {
-		return
+	var bad []int
+	for _, id := range killID {
+		err = client.fetch(fmt.Sprintf("/killID/%v/", id), &list)
+		if err != nil || len(list) == 0 {
+			bad = append(bad, id)
+		} else {
+			result = append(result, list...)
+		}
 	}
-	kill = list[0]
-	return
-}
-
-func (client *Client) KillmailGetMany(killIDs ...int) (kills []Killmail, err error) {
-	err = errors.New("not implemented yet")
+	if len(bad) > 0 {
+		err = fmt.Errorf("one or more killmails could not be retrieved: %v", bad)
+	}
 	return
 }
 
