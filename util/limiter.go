@@ -24,7 +24,7 @@ type Limiter struct {
 // NewLimiter returns a new, managed Limiter instance.
 func NewLimiter(rate, burst, conn int) (*Limiter, error) {
 	if rate <= 0 || burst <= 0 || conn <= 0 {
-		return nil, errors.New("NewLimiter values rate/burst/conn must be greater than zero in value")
+		return nil, errors.New("NewLimiter values rate, burst, and/or conn must be greater than zero in value")
 	}
 	lim := &Limiter{
 		maxRate:  rate,
