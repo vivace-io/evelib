@@ -1,22 +1,27 @@
 package crest
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
-// TypesGetAll (https://crest-tq.eveonline.com/inventory/types/)
-// Returns all Types from Eve Online. If `complete` is true, it will fill all
-// missing information for each type.
-func (c *Client) TypesGetAll() (result []Type, err error) {
-	collection := typeCollection{}
-	err = c.get("inventory/types/", &collection)
-	if err != nil {
-		return
-	}
-	result = append(result, collection.Items...)
-	for collection.Next.Href != "" {
-		err = c.get("types/", &collection)
+// InventoryTypesGet (https://crest-tq.eveonline.com/inventory/types/)
+// Returns basic information on all Types from Eve Online. Note that not all
+// data is present in each model, as the specific endpoint for each is not
+// walked by this method.
+func (c *Client) InventoryTypesGet() (result []Type, err error) {
+	pageCount := 1000 // picking a random number to be adjusted later...
+	for current := 1; current < pageCount+1; current++ {
+		page := new(typePage)
+		err = c.get(fmt.Sprintf("inventory/types/?page=%v", current), &page)
 		if err != nil {
-			err = fmt.Errorf("unable to pull all item types with error %v", err)
+			err = fmt.Errorf("failed to retrieve page with error %v", err)
 			return
+		}
+		result = append(result, page.Items...)
+		if pageCount == 1000 {
+			pageCount = page.PageCount
+			log.Println(pageCount)
 		}
 	}
 	return
@@ -24,26 +29,23 @@ func (c *Client) TypesGetAll() (result []Type, err error) {
 
 // Type represents an item type as it is retrieved from CREST.
 type Type struct {
-	Name        string  `json:"name"`
 	ID          int     `json:"id"`
-	IconID      int     `json:"iconID"`
+	Href        string  `json:"href"`
+	Name        string  `json:"name"`
 	Description string  `json:"description"`
+	IconID      int     `json:"iconID"`
+	Icon        Href    `json:"icon"`
 	Volume      float32 `json:"volume"`
 	Radius      float32 `json:"radius"`
 	Published   bool    `json:"published"`
 	Mass        float32 `json:"mass"`
 	PortionSize float32 `json:"portionSize"`
-	Href        string  `json:"href"`
 }
 
-// typeCollection is an intermediate object for walking pages to retrieve all
-// types from a CREST endpoint
-type typeCollection struct {
+// typePage is an intermediate for walking pages on /invetory/types/
+type typePage struct {
 	PageCount int    `json:"pageCount"`
 	Items     []Type `json:"items"`
-	Next      struct {
-		Href string `json:"href"`
-	} `json:"next, omitempty"`
 }
 
 // Group represents an inventory group.
