@@ -82,9 +82,10 @@ func ValidateOptions(opts *Options) error {
 
 // Client is a client to access zKillboard's API.
 type Client struct {
-	locker  *sync.RWMutex
-	opts    *Options
-	limiter *util.Limiter
+	locker    *sync.RWMutex
+	opts      *Options
+	limiter   *util.Limiter
+	webClient *http.Client
 }
 
 // NewClient returns a new API client. If the options passed are nil, it uses
@@ -100,6 +101,11 @@ func NewClient(opts *Options) (client *Client, err error) {
 	client = &Client{
 		locker: new(sync.RWMutex),
 		opts:   opts,
+	}
+	client.webClient = &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: opts.DisableTLS},
+		},
 	}
 	// Error checking util.NewLimiter is redundant here, as ValidateOptions covers
 	// any error that may be returned, so ignore the error.
@@ -124,13 +130,8 @@ func (client *Client) fetch(path string, model interface{}) (err error) {
 	if client.opts.UserAgent != "" {
 		request.Header.Add("User-Agent", client.opts.UserAgent)
 	}
-	webClient := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: client.opts.DisableTLS},
-		},
-	}
 	var rawresp *http.Response
-	rawresp, err = webClient.Do(request)
+	rawresp, err = client.webClient.Do(request)
 	if err != nil {
 		return err
 	}

@@ -80,9 +80,10 @@ func ValidateOptions(opts *Options) error {
 
 // Client to EVE Online's CREST API.
 type Client struct {
-	locker  *sync.RWMutex
-	opts    *Options
-	limiter *util.Limiter
+	locker    *sync.RWMutex
+	opts      *Options
+	limiter   *util.Limiter
+	webClient *http.Client
 }
 
 // NewClient returns a new API client. If the options passed are nil, it uses
@@ -98,6 +99,11 @@ func NewClient(opts *Options) (client *Client, err error) {
 	client = &Client{
 		locker: new(sync.RWMutex),
 		opts:   opts,
+	}
+	client.webClient = &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: opts.DisableTLS},
+		},
 	}
 	// Error checking util.NewLimiter is redundant here, as ValidateOptions covers
 	// any error that may be returned, so ignore the error.
@@ -124,13 +130,8 @@ func (c *Client) get(path string, model interface{}) (err error) {
 	}
 	request.Header.Add("Accept", CRESTVersion)
 
-	webClient := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: c.opts.DisableTLS},
-		},
-	}
 	var rawresp *http.Response
-	rawresp, err = webClient.Do(request)
+	rawresp, err = c.webClient.Do(request)
 	if err != nil {
 		return
 	}
