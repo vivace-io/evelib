@@ -47,6 +47,7 @@ type Client struct {
 	userAgent string
 	running   bool
 	errchan   chan error
+	webClient *http.Client
 }
 
 // NewClient takes an option parameter, which may be nil, and configures and
@@ -57,8 +58,9 @@ func NewClient(opts *Options) (client *Client, err error) {
 		opts = DefaultOptions()
 	}
 	client = &Client{
-		locker: new(sync.RWMutex),
-		addr:   opts.Addr,
+		locker:    new(sync.RWMutex),
+		addr:      opts.Addr,
+		webClient: &http.Client{},
 	}
 	if client.addr == "" {
 		err = errors.New("address for RedisQ endpoint was not set")
@@ -125,14 +127,13 @@ func (client *Client) Close() {
 
 // fetch a killmail from RedisQ.
 func (client *Client) fetch() (resp response, err error) {
-	webc := &http.Client{}
 	request, err := http.NewRequest("GET", client.addr, nil)
 	if err != nil {
 		panic(err)
 	}
 	request.Header.Add("User-Agent", client.userAgent)
 
-	rawresp, err := webc.Do(request)
+	rawresp, err := client.webClient.Do(request)
 	if err != nil {
 		return
 	}
