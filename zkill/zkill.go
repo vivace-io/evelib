@@ -34,9 +34,9 @@ type Options struct {
 	// that may not necissarily have certificate authorities installed or
 	// referenced.
 	DisableTLS bool
-	// RateLimit is the maximum rate per second that calls may be made. the
-	// official limit is 150, but the client will accept larger values. Any value
-	// zero or below zero will result in an error being returned.
+	// RateLimit is the maximum rate per second that calls may be made. The
+	// official limit is 10, but the client will accept larger values. Any value
+	// zero or below will result in an error being returned.
 	RateLimit int
 	// RateBurst is the maximum burst requests that may be made. The official
 	// limit is 400, but the Client will accept larger values. Any value zero
@@ -57,8 +57,8 @@ func DefaultOptions() *Options {
 	return &Options{
 		RootAddress: DefaultAddress,
 		DisableTLS:  false,
-		RateLimit:   150,
-		RateBurst:   400,
+		RateLimit:   10,
+		RateBurst:   10,
 		MaxConn:     5,
 	}
 }
@@ -70,6 +70,9 @@ func ValidateOptions(opts *Options) error {
 	}
 	if opts.RateLimit <= 0 {
 		return fmt.Errorf("Options.RateLimit was expected to be greater than zero but was %v", opts.RateLimit)
+	}
+	if opts.RateLimit > 10 {
+		return fmt.Errorf("Options.RateLimit was expected to be 10 at most but was %v", opts.RateLimit)
 	}
 	if opts.RateBurst <= 0 {
 		return fmt.Errorf("Options.RateBurst was expected to be greater than zero but was %v", opts.RateBurst)
