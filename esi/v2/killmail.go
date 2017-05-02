@@ -29,6 +29,17 @@ type Killmail struct {
 		ShipTypeID    int `json:"ship_type_id"`
 		CharacterID   int `json:"character_id"`
 		CorporationID int `json:"corporation_id"`
+		Position      struct {
+			X float64 `json:"x"`
+			Y float64 `json:"y"`
+			Z float64 `json:"z"`
+		} `json:"position"`
+		Items []struct {
+			ItemTypeID      int `json:"item_type_id"`
+			Singleton       int `json:"singleton"`
+			Flag            int `json:"flag"`
+			QuantityDropped int `json:"quantity_dropped"`
+		} `json:"items"`
 	} `json:"victim"`
 	Attackers []struct {
 		CharacterID    int     `json:"character_id"`
@@ -39,16 +50,5 @@ type Killmail struct {
 		FinalBlow      bool    `json:"final_blow"`
 		DamageDone     int     `json:"damage_done"`
 		SecurityStatus float32 `json:"security_status"`
-	}
-	Position struct {
-		X float64 `json:"x"`
-		Y float64 `json:"y"`
-		Z float64 `json:"z"`
-	}
-	Items []struct {
-		ItemTypeID      int `json:"item_type_id"`
-		Singleton       int `json:"singleton"`
-		Flag            int `json:"flag"`
-		QuantityDropped int `json:"quantity_dropped"`
-	}
+	} `json:"attackers"`
 }
