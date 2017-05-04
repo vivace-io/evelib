@@ -8,7 +8,7 @@ func TestMarketTypesGet(t *testing.T) {
 	if err != nil {
 		t.Errorf("request failed: %v", err)
 	}
-	if len(types) != 11748 {
-		t.Errorf("wanted 11748 types but got %v", len(types))
+	if len(types) != 11752 {
+		t.Errorf("wanted 11752 types but got %v", len(types))
 	}
 }
