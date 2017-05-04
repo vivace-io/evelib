@@ -24,7 +24,7 @@ func TestTypesGet(t *testing.T) {
 	}
 	// TODO - Another way to check expected items, so tests don't break with new
 	// items...
-	if len(types) != 31910 {
-		t.Errorf("wanted 31910 types but got %v", len(types))
+	if len(types) != 31914 {
+		t.Errorf("wanted 31914 types but got %v", len(types))
 	}
 }
