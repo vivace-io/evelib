@@ -14,7 +14,8 @@ func (client *Client) RegionIDs() (results []int, err error) {
 
 // RegionGet accepts a region's ID and returns its ESI model.
 func (client *Client) RegionGet(id int) (result *Region, err error) {
-	err = client.get(fmt.Sprintf("/universe/regions/%v/"), &result)
+	path := buildPath(fmt.Sprintf("/universe/regions/%v/", id))
+	err = client.get(path, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +42,8 @@ func (client *Client) ConstellationIDs() (results []int, err error) {
 
 // ConstellationGet accepts a constellation's ID and returns its ESI model.
 func (client *Client) ConstellationGet(id int) (result *Constellation, err error) {
-	err = client.get(fmt.Sprintf("/universe/constellations/%v/"), &result)
+	path := buildPath(fmt.Sprintf("/universe/constellations/%v/", id))
+	err = client.get(path, &result)
 	if err != nil {
 		return nil, err
 	}

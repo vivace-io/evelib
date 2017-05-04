@@ -1,6 +1,44 @@
 package esi
 
-import "testing"
+import (
+	"math/rand"
+	"testing"
+)
+
+func TestConstellationIDs(t *testing.T) {
+	t.Parallel()
+	results, err := testClient.ConstellationIDs()
+	if err != nil {
+		t.Errorf("failed to retrieve constellation IDs: %v", err)
+		t.FailNow()
+	}
+	if len(results) != 1120 {
+		t.Errorf("bad result - want results length 1120, got %v", len(results))
+	}
+}
+
+func TestConstellationGet(t *testing.T) {
+	t.Parallel()
+	ids, err := testClient.ConstellationIDs()
+	if err != nil {
+		t.Errorf("failed to retrieve constellation IDs: %v", err)
+		t.FailNow()
+	}
+
+	// Since pulling every Constellation could timeout on Codeship or the
+	// developer's computer, we're just going to take a random pool of 100
+	// constellations and retrieve them.
+	// TODO
+	//		Make duplicates impossible.
+	//		Use result, don't ignore it.
+	for x := 0; x < 100; x++ {
+		i := ids[rand.Intn(len(ids))]
+		if _, err = testClient.ConstellationGet(i); err != nil {
+			t.Errorf("failed to retrieve constellation %v: %v", i, err)
+			t.FailNow()
+		}
+	}
+}
 
 func TestSystemIDs(t *testing.T) {
 	t.Parallel()
@@ -29,16 +67,4 @@ func TestSystemGet(t *testing.T) {
 		t.Errorf("incorrect system name - want Jita but got %v", result.Name)
 	}
 	// TODO - check the rest
-}
-
-func TestConstellationIDs(t *testing.T) {
-	t.Parallel()
-	results, err := testClient.ConstellationIDs()
-	if err != nil {
-		t.Errorf("failed to retrieve constellation IDs: %v", err)
-		t.FailNow()
-	}
-	if len(results) != 1120 {
-		t.Errorf("bad result - want results length 1120, got %v", len(results))
-	}
 }
