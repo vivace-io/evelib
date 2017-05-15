@@ -26,12 +26,12 @@ func TestConstellationGet(t *testing.T) {
 	}
 
 	// Since pulling every Constellation could timeout on Codeship or the
-	// developer's computer, we're just going to take a random pool of 100
+	// developer's computer, we're just going to take a random pool of 50
 	// constellations and retrieve them.
 	// TODO
 	//		Make duplicates impossible.
 	//		Use result, don't ignore it.
-	for x := 0; x < 100; x++ {
+	for x := 0; x < 50; x++ {
 		i := ids[rand.Intn(len(ids))]
 		if _, err = testClient.ConstellationGet(i); err != nil {
 			t.Errorf("failed to retrieve constellation %v: %v", i, err)

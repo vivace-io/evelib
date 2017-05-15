@@ -16,6 +16,9 @@ func buildPath(route string) (path string) {
 	if strings.Contains(route, "/killmails/") {
 		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
 	}
+	if strings.Contains(route, "/markets/groups/") {
+		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
+	}
 	if strings.Contains(route, "/universe/regions/") {
 		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
 	}
