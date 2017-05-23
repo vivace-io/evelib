@@ -29,6 +29,7 @@ type Killmail struct {
 		ShipTypeID    int `json:"ship_type_id"`
 		CharacterID   int `json:"character_id"`
 		CorporationID int `json:"corporation_id"`
+		AllianceID    int `json:"alliance_id"`
 		Position      struct {
 			X float64 `json:"x"`
 			Y float64 `json:"y"`
