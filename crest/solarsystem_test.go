@@ -15,7 +15,7 @@ func TestSolarSystemsGetAll(t *testing.T) {
 	// [1] SolarSystems(false)
 	systems, err := testClient.SolarSystemsGetAll()
 	if err != nil {
-		t.Errorf("error returned: %v", err)
+		t.Errorf("bad request: %v", err)
 	}
 	if len(systems) != 8035 {
 		t.Errorf("expected 8035 items returned but got %v", len(systems))
@@ -34,7 +34,7 @@ func TestSolarSystemsGet(t *testing.T) {
 	sysName := "Jita"
 	system, err := testClient.SolarSystemsGet(sysID)
 	if err != nil {
-		t.Errorf("error returned: %v", err)
+		t.Errorf("bad request: %v", err)
 	}
 	if system == nil {
 		t.Error("system was nil")

@@ -14,7 +14,7 @@ func TestRegionsGetAll(t *testing.T) {
 	t.Parallel()
 	regions, err := testClient.RegionsGetAll()
 	if err != nil {
-		t.Errorf("Regions(false) failed - error returned: %v", err)
+		t.Errorf("bad request: %v", err)
 	}
 	if len(regions) != 100 {
 		t.Errorf("Regions(false) failed - expected 100 items returned but got %v", len(regions))

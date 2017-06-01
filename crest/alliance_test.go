@@ -15,7 +15,7 @@ func TestAlliancesGet(t *testing.T) {
 	// https://crest-tq.eveonline.com/alliances/99006213/
 	result, err := testClient.AlliancesGet(99006213)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("bad request: %v", err)
 	}
 	if result.ID != 99006213 {
 		t.Errorf("alliance ID mismatch - expected 99006213 but got %v", result.ID)

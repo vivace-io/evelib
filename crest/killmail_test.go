@@ -17,7 +17,7 @@ func TestKillmailGet(t *testing.T) {
 	hash := "4d78d27888c789fef959f59c6e417ed91ad4c502"
 	kill, err := testClient.KillmailGet(id, hash)
 	if err != nil {
-		t.Errorf("error retrieving killmail: %v", err)
+		t.Errorf("bad request: %v", err)
 	}
 	if kill.KillID != id {
 		t.Errorf("kill id mismatch - want %v but got %v", id, kill.KillID)

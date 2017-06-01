@@ -6,7 +6,7 @@ func TestTypesGet(t *testing.T) {
 	t.Parallel()
 	types, err := testClient.InventoryTypesGet()
 	if err != nil {
-		t.Errorf("request failed: %v", err)
+		t.Errorf("bad request: %v", err)
 	}
 
 	// Check for duplicates.
@@ -24,7 +24,7 @@ func TestTypesGet(t *testing.T) {
 	}
 	// TODO - Another way to check expected items, so tests don't break with new
 	// items...
-	if len(types) != 31914 {
-		t.Errorf("wanted 31914 types but got %v", len(types))
+	if len(types) != 32013 {
+		t.Errorf("wanted 32013 types but got %v", len(types))
 	}
 }
