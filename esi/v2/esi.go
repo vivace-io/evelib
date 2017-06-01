@@ -12,22 +12,27 @@ import (
 )
 
 const (
-	APIAddress = "https://esi.tech.ccp.is"
+	DefaultAPIAddr = "https://esi.tech.ccp.is"
 )
 
 type Client struct {
 	UserAgent  string
 	httpClient *http.Client
+	apiRoot    string
 }
 
 func NewClient(options *Options) (client *Client) {
 	if options != nil {
 		client = &Client{
 			httpClient: options.HTTPClient,
+			apiRoot:    options.APIRoot,
 			UserAgent:  options.UserAgent,
 		}
 		if client.httpClient == nil {
 			client.httpClient = new(http.Client)
+		}
+		if client.apiRoot == "" {
+			client.apiRoot = DefaultAPIAddr
 		}
 	} else {
 		client = &Client{

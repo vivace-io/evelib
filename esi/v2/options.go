@@ -14,4 +14,8 @@ type Options struct {
 	// NOTE: While this library does not provide any sort of caching, you might
 	// check out the httpcache library. (https://github.com/gregjones/httpcache)
 	HTTPClient *http.Client
+	// APIRoot (optional) the root address of the ESI API without a trailing slash.
+	// Ideally, this should be left blank unless using a proxy or cache service.
+	// When left blank, defaults to 'https://esi.tech.ccp.is'.
+	APIRoot string
 }

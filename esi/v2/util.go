@@ -14,22 +14,22 @@ import (
 //          https://esi.tech.ccp.is/v1/killmails/{someID}/{someHash}
 func buildPath(route string) (path string) {
 	if strings.Contains(route, "/killmails/") {
-		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
 	if strings.Contains(route, "/markets/groups/") {
-		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
 	if strings.Contains(route, "/universe/regions/") {
-		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
 	if strings.Contains(route, "/universe/constellations/") {
-		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
 	if route == "/universe/systems/" {
-		return fmt.Sprintf("%v/%v%v", APIAddress, "v1", route)
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
 	if strings.Contains("/universe/systems/", route) {
-		return fmt.Sprintf("%v/%v%v", APIAddress, "v2", route)
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v2", route)
 	}
-	return fmt.Sprintf("%v/%v%v", APIAddress, "v2", route)
+	return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v2", route)
 }
