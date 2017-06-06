@@ -72,12 +72,13 @@ func (client *Client) Login(w http.ResponseWriter, r *http.Request, state string
 }
 
 // Exchange the authorization code for a token.
-func (client *Client) Callback(code string) (data map[string]interface{}, err error) {
+func (client *Client) Callback(code string) (token map[string]interface{}, err error) {
 	url := fmt.Sprintf("%v/oauth/token/?grant_type=authorization_code&code=%v", client.oauth, code)
 	var req *http.Request
 	if req, err = http.NewRequest("POST", url, nil); err != nil {
 		return
 	}
+	req.Header.Set("Authorization", fmt.Sprintf("Basic %v", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v:%v", client.id, client.secret)))))
 	return client.doRequest(req)
 }
 
@@ -93,12 +94,27 @@ func (client *Client) Refresh(old map[string]interface{}) (new map[string]interf
 	if req, err = http.NewRequest("POST", url, nil); err != nil {
 		return
 	}
+	req.Header.Set("Authorization", fmt.Sprintf("Basic %v", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v:%v", client.id, client.secret)))))
+	return client.doRequest(req)
+}
+
+func (client *Client) Verify(token map[string]interface{}) (result map[string]interface{}, err error) {
+	_, ok := token["access_token"].(string)
+	if !ok {
+		err = fmt.Errorf("bad type for token[\"access_token\"] - want string but got %v", reflect.TypeOf(token["access_token"]).String())
+		return
+	}
+	url := fmt.Sprintf("%v/oauth/verify", client.oauth)
+	var req *http.Request
+	if req, err = http.NewRequest("GET", url, nil); err != nil {
+		return
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token["access_token"]))
 	return client.doRequest(req)
 }
 
 func (client *Client) doRequest(req *http.Request) (data map[string]interface{}, err error) {
 	// Sweet mother of nested functions...
-	req.Header.Set("Authorization", fmt.Sprintf("Basic %v", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v:%v", client.id, client.secret)))))
 	var resp *http.Response
 	if resp, err = client.httpClient.Do(req); err != nil {
 		return
