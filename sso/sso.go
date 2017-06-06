@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 )
 
 var (
@@ -65,7 +66,7 @@ func NewClient(opts *Options) (client *Client, err error) {
 func (client *Client) Login(w http.ResponseWriter, r *http.Request, state string, scopes ...string) {
 	url := fmt.Sprintf("%v/oauth/authorize/?response_type=code&redirect_uri=%v&client_id=%v&state=%v", client.oauth, client.callback, client.id, state)
 	if len(scopes) > 0 {
-		// Append the scopes, man.
+		url = fmt.Sprintf("%v&scope=%v", url, formatScopes(scopes...))
 	}
 	http.Redirect(w, r, url, http.StatusFound)
 }
@@ -73,29 +74,48 @@ func (client *Client) Login(w http.ResponseWriter, r *http.Request, state string
 // Exchange the authorization code for a token.
 func (client *Client) Callback(code string) (data map[string]interface{}, err error) {
 	url := fmt.Sprintf("%v/oauth/token/?grant_type=authorization_code&code=%v", client.oauth, code)
-	var areq *http.Request
-	if areq, err = http.NewRequest("POST", url, nil); err != nil {
+	var req *http.Request
+	if req, err = http.NewRequest("POST", url, nil); err != nil {
 		return
 	}
+	return client.doRequest(req)
+}
+
+// Refresh an old token for a new one.
+func (client *Client) Refresh(old map[string]interface{}) (new map[string]interface{}, err error) {
+	refreshTkn, ok := old["refresh_token"].(string)
+	if !ok {
+		err = fmt.Errorf("bad type for old[\"refresh_token\"] - want string but got %v", reflect.TypeOf(old["refresh_token"]).String())
+		return
+	}
+	url := fmt.Sprintf("%v/oauth/token/?grant_type=refresh_token&refresh_token=%v", client.oauth, refreshTkn)
+	var req *http.Request
+	if req, err = http.NewRequest("POST", url, nil); err != nil {
+		return
+	}
+	return client.doRequest(req)
+}
+
+func (client *Client) doRequest(req *http.Request) (data map[string]interface{}, err error) {
 	// Sweet mother of nested functions...
-	areq.Header.Set("Authorization", fmt.Sprintf("Basic %v", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v:%v", client.id, client.secret)))))
-	var aresp *http.Response
-	if aresp, err = client.httpClient.Do(areq); err != nil {
+	req.Header.Set("Authorization", fmt.Sprintf("Basic %v", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%v:%v", client.id, client.secret)))))
+	var resp *http.Response
+	if resp, err = client.httpClient.Do(req); err != nil {
 		return
 	}
-	defer aresp.Body.Close()
-	if aresp.StatusCode != http.StatusOK {
-		if aresp.StatusCode == http.StatusConflict {
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		if resp.StatusCode == http.StatusConflict {
 			// We've made too many requests to SSO.
 			err = ErrTooManyRequests
 			return
 		} else {
-			err = fmt.Errorf("EVE SSO responded with HTTP status %v", aresp.StatusCode)
+			err = fmt.Errorf("EVE SSO responded with HTTP status %v", resp.StatusCode)
 			return
 		}
 	}
 	var raw []byte
-	if raw, err = ioutil.ReadAll(aresp.Body); err != nil {
+	if raw, err = ioutil.ReadAll(resp.Body); err != nil {
 		return
 	}
 	data = make(map[string]interface{})
@@ -107,8 +127,14 @@ func (client *Client) Callback(code string) (data map[string]interface{}, err er
 	return
 }
 
-// Refresh an old token for a new one.
-func (client *Client) Refresh(old map[string]interface{}) (new map[string]interface{}, err error) {
-	// TODO - Implement...
+func formatScopes(scopes ...string) (formated string) {
+	for i, s := range scopes {
+		if len(scopes) == i+1 {
+			// Do not append trailing space to last entry.
+			formated += s
+		} else {
+			formated += s + " "
+		}
+	}
 	return
 }
