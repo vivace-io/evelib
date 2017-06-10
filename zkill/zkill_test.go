@@ -1,6 +1,7 @@
 package zkill
 
 import (
+	"fmt"
 	"os"
 	"testing"
 )
@@ -16,6 +17,13 @@ func TestMain(m *testing.M) {
 	// Disable TLS verification for Continuous Integration testing.
 	opts.DisableTLS = true
 	opts.UserAgent = "EveLib Testing Agent"
-	testClient, _ = NewClient(opts)
+	opts.MaxConn = 5
+	opts.RateLimit = 10
+	opts.RateBurst = 10
+	var err error
+	testClient, err = NewClient(opts)
+	if err != nil {
+		fmt.Printf("Failed to create test client: %v", err)
+	}
 	os.Exit(m.Run())
 }

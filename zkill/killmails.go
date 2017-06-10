@@ -1,6 +1,7 @@
 package zkill
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -83,25 +84,17 @@ type Zkb struct {
 	Points     int     `json:"points"`
 }
 
-type killList []*Killmail
-
-// KillmailGet takes one or more kill IDs and returns the kill(s).
-// If one or more kills are not found or could not be retrieved, an error
-// is returned.
-func (client *Client) KillmailGet(killID ...int) (result []*Killmail, err error) {
-	var list killList
-	var bad []int
-	for _, id := range killID {
-		err = client.fetch(fmt.Sprintf("/killID/%v/", id), &list)
-		if err != nil || len(list) == 0 {
-			bad = append(bad, id)
-		} else {
-			result = append(result, list...)
-		}
+// KillmailGet takes a killmail ID and returns its ZKillboard representation.
+func (client *Client) KillmailGet(killID int) (result *Killmail, err error) {
+	var resp []*Killmail
+	if err = client.fetch(fmt.Sprintf("/killID/%v/", killID), &resp); err != nil {
+		return nil, err
 	}
-	if len(bad) > 0 {
-		err = fmt.Errorf("one or more killmails could not be retrieved: %v", bad)
+	if len(resp) == 0 {
+		err = errors.New("empty response from ZKillboard")
+		return
 	}
+	result = resp[0]
 	return
 }
 

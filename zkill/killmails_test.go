@@ -7,23 +7,21 @@ import (
 
 func TestKillmailGet(t *testing.T) {
 	t.Parallel()
-	kill, err := testClient.KillmailGet(57373234)
+	kill, err := testClient.KillmailGet(59972778)
 	if err != nil {
-		t.Errorf("failed to retrieve kill 57373234 with error: %v", err)
+		t.Errorf("expected nil error but got: %v", err)
+		return
 	}
-	if kill != nil {
-		t.Log(kill)
+	if kill.KillID != 59972778 {
+		t.Errorf("kill ID mismatch -- want 59972778 but have %v", kill.KillID)
 	}
 }
 
 func TestKillmailGetError(t *testing.T) {
 	t.Parallel()
-	kills, err := testClient.KillmailGet(0, 57373234)
+	_, err := testClient.KillmailGet(0)
 	if err == nil {
 		t.Error("expected error but got nil")
-	}
-	if len(kills) != 1 {
-		t.Errorf("expected one killmail but got %v", len(kills))
 	}
 }
 
