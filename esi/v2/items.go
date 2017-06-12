@@ -2,7 +2,7 @@ package esi
 
 import "fmt"
 
-func (client *Client) TypeIDs() (results []int, err error) {
+func (client *Client) ItemIDs() (results []int, err error) {
 	for p := 1; ; p++ {
 		var ids []int
 		path := buildPath(fmt.Sprintf("/universe/types/?page=%v", p))

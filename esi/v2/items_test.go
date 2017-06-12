@@ -2,9 +2,9 @@ package esi
 
 import "testing"
 
-func TestTypeIDs(t *testing.T) {
+func TestItemIDs(t *testing.T) {
 	t.Parallel()
-	ids, err := testClient.TypeIDs()
+	ids, err := testClient.ItemIDs()
 	if err != nil {
 		t.Errorf("failed to retrieve type IDs: %v", err)
 	}
