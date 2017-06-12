@@ -27,7 +27,7 @@ type Region struct {
 	ID             int    `json:"region_id"`
 	Name           string `json:"name"`
 	Description    string `json:"description"`
-	Constellations int    `json:"constellations"`
+	Constellations []int  `json:"constellations"`
 }
 
 // ConstellationIDs returns a list of constellation IDs from ESI.
