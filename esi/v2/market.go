@@ -30,6 +30,19 @@ func (client *Client) MarketGroupGet(id int) (result *MarketGroup, err error) {
 	return
 }
 
+// MarketPrice of an item type, as retrieved from the `/markets/prices/` endpoint.
+type MarketPrice struct {
+	TypeID         int     `json:"type_id"`
+	AveragePrice   float32 `json:"average_price"`
+	AdjustedPrince float32 `json:"adjusted_price"`
+}
+
+func (client *Client) MarketPrices() (results []*MarketPrice, err error) {
+	path := buildPath("/markets/prices/")
+	err = client.get(path, &results)
+	return
+}
+
 type MarketOrder struct {
 	OrderID    int       `json:"order_id"`
 	BuyOrder   bool      `json:"is_buy_order"`

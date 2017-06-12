@@ -39,3 +39,15 @@ func TestMarketGroupGet(t *testing.T) {
 		}
 	}
 }
+
+func TestMarketPrices(t *testing.T) {
+	t.Parallel()
+	prices, err := testClient.MarketPrices()
+	if err != nil {
+		t.Errorf("failed to retrieve prices: %v", err)
+		return
+	}
+	if len(prices) != 10831 {
+		t.Errorf("expected 10831 results but have %v", len(prices))
+	}
+}
