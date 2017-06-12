@@ -22,8 +22,11 @@ func buildPath(route string) (path string) {
 	if strings.Contains(route, "/universe/regions/") {
 		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
-	if strings.Contains(route, "/universe/types/") {
+	if strings.Contains(route, "/universe/types/?page=") {
 		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
+	}
+	if strings.Contains(route, "/universe/types/") {
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v2", route)
 	}
 	if strings.Contains(route, "/universe/constellations/") {
 		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
