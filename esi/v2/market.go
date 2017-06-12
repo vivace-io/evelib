@@ -32,9 +32,9 @@ func (client *Client) MarketGroupGet(id int) (result *MarketGroup, err error) {
 
 // MarketPrice of an item type, as retrieved from the `/markets/prices/` endpoint.
 type MarketPrice struct {
-	TypeID         int     `json:"type_id"`
-	AveragePrice   float32 `json:"average_price"`
-	AdjustedPrince float32 `json:"adjusted_price"`
+	TypeID        int     `json:"type_id"`
+	AveragePrice  float32 `json:"average_price"`
+	AdjustedPrice float32 `json:"adjusted_price"`
 }
 
 func (client *Client) MarketPrices() (results []*MarketPrice, err error) {
