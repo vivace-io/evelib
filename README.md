@@ -6,9 +6,13 @@ Library for connecting to and using Eve Online and other related 3rd party servi
 
 This collection of libraries is still in a very early stage of development, and APIs are subject to change without notice on master.
 
-**Stable API Versions:** when a version is deemed stable
+**Stable API Versions:** when a version is deemed stable, it will be tagged on the repository and accessable via `gopkg.in` for versioning.
 
-Stable API versions will be tagged on the repository, and released through gopkg.in!
+## DEPRECIATION NOTICE
+
+CREST library will be removed in the next few days. As it stands, ESI covers most (if not all) of CREST's current functionality, so users should switch to that.
+
+As far as I know, this library has little to no traffic/usage, so I doubt this will cause much issue.
 
 ## Version 0
 
