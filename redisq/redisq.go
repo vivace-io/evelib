@@ -44,6 +44,7 @@ type Client struct {
 	rchan     []RecieverChan
 	rfunc     []RecieverFunc
 	addr      string
+	queueID   string
 	userAgent string
 	running   bool
 	errchan   chan error
@@ -60,6 +61,7 @@ func NewClient(opts *Options) (client *Client, err error) {
 	client = &Client{
 		locker:    new(sync.RWMutex),
 		addr:      opts.Addr,
+		queueID:   opts.QueueID,
 		webClient: &http.Client{},
 	}
 	if client.addr == "" {
@@ -127,10 +129,18 @@ func (client *Client) Close() {
 
 // fetch a killmail from RedisQ.
 func (client *Client) fetch() (resp response, err error) {
-	request, err := http.NewRequest("GET", client.addr, nil)
-	if err != nil {
-		panic(err)
+	var request *http.Request
+	if request, err = http.NewRequest("GET", client.addr, nil); err != nil {
+		if err != nil {
+			// Panic instead of returning, as any error returned is a bug on our end
+			// that breaks package functionality entirely.
+			panic(err)
+		}
 	}
+	if client.queueID != "" {
+		request.URL.Query().Set("queueID", client.queueID)
+	}
+
 	request.Header.Add("User-Agent", client.userAgent)
 
 	rawresp, err := client.webClient.Do(request)
