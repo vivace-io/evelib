@@ -10,7 +10,7 @@ This collection of libraries is still in a very early stage of development, and 
 
 ## DEPRECIATION NOTICE
 
-CREST library will be removed in the next few days. As it stands, ESI covers most (if not all) of CREST's current functionality, so users should switch to that.
+Packages supporting CREST and the XML APIs will be removed in the next few days. As it stands, ESI covers most data provided by the CREST/XML APIs, so users should switch to that.
 
 As far as I know, this library has little to no traffic/usage, so I doubt this will cause much issue.
 
