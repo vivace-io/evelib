@@ -15,15 +15,11 @@ func (client *Client) KillmailGet(id int, hash string) (kill *Killmail, err erro
 	return
 }
 
-type KillmailTime struct {
-	time.Time
-}
-
 type Killmail struct {
-	KillmailID    int          `json:"killmail_id"`
-	KillmailHash  string       `json:"killmail_hash"`
-	KillmailTime  KillmailTime `json:"killmail_time"`
-	SolarSystemID int          `json:"solar_system_id"`
+	KillmailID    int       `json:"killmail_id"`
+	KillmailHash  string    `json:"killmail_hash"`
+	KillmailTime  time.Time `json:"killmail_time"`
+	SolarSystemID int       `json:"solar_system_id"`
 	Victim        struct {
 		DamageTaken   int `json:"damage_taken"`
 		ShipTypeID    int `json:"ship_type_id"`
