@@ -6,8 +6,8 @@ import (
 )
 
 type MarketGroup struct {
-	ID            int    `json:"market_group_id"`
-	ParentGroupId int    `json:"parent_group_id"`
+	MarketGroupID int    `json:"market_group_id"`
+	ParentGroupID int    `json:"parent_group_id"`
 	Description   string `json:"description"`
 	Types         []int  `json:"types"`
 }
@@ -37,6 +37,8 @@ type MarketPrice struct {
 	AdjustedPrice float32 `json:"adjusted_price"`
 }
 
+// MarketPrices returns the market prices for all published items in EVE Online
+// from the `/markets/prices/` endpoint.
 func (client *Client) MarketPrices() (results []*MarketPrice, err error) {
 	path := buildPath("/markets/prices/")
 	err = client.get(path, &results)

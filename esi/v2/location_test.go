@@ -60,8 +60,8 @@ func TestSystemGet(t *testing.T) {
 		t.Errorf("failed to retrieve Jita(30000142) system information: %v", err)
 		t.FailNow()
 	}
-	if result.ID != 30000142 {
-		t.Errorf("incorrect system ID - want 30000142 but got %v", result.ID)
+	if result.SystemID != 30000142 {
+		t.Errorf("incorrect system ID - want 30000142 but got %v", result.SystemID)
 	}
 	if result.Name != "Jita" {
 		t.Errorf("incorrect system name - want Jita but got %v", result.Name)

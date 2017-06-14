@@ -24,7 +24,7 @@ func (client *Client) RegionGet(id int) (result *Region, err error) {
 
 // Region in EVE Online.
 type Region struct {
-	ID             int    `json:"region_id"`
+	RegionID       int    `json:"region_id"`
 	Name           string `json:"name"`
 	Description    string `json:"description"`
 	Constellations []int  `json:"constellations"`
@@ -52,11 +52,11 @@ func (client *Client) ConstellationGet(id int) (result *Constellation, err error
 
 // Constellation in EVE Online.
 type Constellation struct {
-	ID        int      `json:"constellation_id"`
-	Name      string   `json:"name"`
-	Position  Position `json:"position"`
-	RegionID  int      `json:"region_id"`
-	SystemIDs []int    `json:"systems"`
+	ConstellationID int      `json:"constellation_id"`
+	Name            string   `json:"name"`
+	Position        Position `json:"position"`
+	RegionID        int      `json:"region_id"`
+	Systems         []int    `json:"systems"`
 }
 
 // SystemIDs returns a list of system IDs from ESI.
@@ -81,12 +81,12 @@ func (client *Client) SystemGet(id int) (result *System, err error) {
 
 // System is a Solar System in EVE.
 type System struct {
-	ID             int      `json:"system_id"`
+	SystemID       int      `json:"system_id"`
 	Name           string   `json:"name"`
 	SecurityClass  string   `json:"security_class"`
 	SecurityStatus float32  `json:"security_status"`
 	Position       Position `json:"position"`
-	StargateIDs    []int    `json:"stargates"`
+	Stargates      []int    `json:"stargates"`
 	// TODO
 	// Planets []Planet `json:"planets"`
 }

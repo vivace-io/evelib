@@ -47,7 +47,7 @@ func TestMarketPrices(t *testing.T) {
 		t.Errorf("failed to retrieve prices: %v", err)
 		return
 	}
-	if len(prices) != 10831 {
-		t.Errorf("expected 10831 results but have %v", len(prices))
+	if len(prices) != 10859 {
+		t.Errorf("expected 10859 results but have %v", len(prices))
 	}
 }
