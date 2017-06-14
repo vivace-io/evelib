@@ -22,6 +22,9 @@ func buildPath(route string) (path string) {
 	if route == "/markets/prices/" {
 		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
+	if route == "/status/" {
+		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
+	}
 	if strings.Contains(route, "/universe/regions/") {
 		return fmt.Sprintf("%v/%v%v", DefaultAPIAddr, "v1", route)
 	}
