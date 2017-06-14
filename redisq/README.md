@@ -1,8 +1,9 @@
 # evelib/redisq
 
-This package implements a client to ZKillboard for retrieving killmails in near-real time from the service's RedisQ endpoint(http://redisq.zkillboard.com/listen.php). **It is still largely untested and considered experimental.**
+This package implements a client to [ZKillboard's RedisQ API](http://redisq.zkillboard.com/listen.php) for retrieving EVE Online killmails in near-real time as they are posted to ZKillboard.
 
-## **PLEASE NOTE:**
+## **PLEASE NOTE**
+
 *Due to he nature of RedisQ, having more than one RedisQ client running simultaneously (in the same program or another) will ultimately disrupt one another.* This means that for ever killmail consumed by one client, another client will **not** receive the same killmail.
 
-*To avoid this issue:* consider routing the different applications through separate external IP addresses
+*Avoiding this issue:* You can specify a Queue ID in `redisq.Options` that uniquely identifies your RedisQ client.
