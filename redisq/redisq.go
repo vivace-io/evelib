@@ -141,16 +141,16 @@ func (client *Client) fetch() (resp response, err error) {
 		request.URL.Query().Set("queueID", client.queueID)
 	}
 
-	request.Header.Add("User-Agent", client.userAgent)
-
-	rawresp, err := client.webClient.Do(request)
-	if err != nil {
-		return
+	var rawresp *http.Response
+	if rawresp, err = client.webClient.Do(request); err != nil {
+		if err != nil {
+			return
+		}
 	}
 	defer rawresp.Body.Close()
 
-	body, err := ioutil.ReadAll(rawresp.Body)
-	if err != nil {
+	var body []byte
+	if body, err = ioutil.ReadAll(rawresp.Body); err != nil {
 		return
 	}
 	err = json.Unmarshal(body, &resp)
