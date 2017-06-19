@@ -1,7 +1,6 @@
 package esi
 
 import (
-	"fmt"
 	"strings"
 	"time"
 )
@@ -26,7 +25,6 @@ type ESITime struct {
 }
 
 func (et *ESITime) UnmarshalJSON(b []byte) (err error) {
-	fmt.Println(strings.Replace(string(b), "\"", "", 2))
 	et.Time, err = time.Parse("2006-01-02", strings.Replace(string(b), "\"", "", 2))
 	return
 }
