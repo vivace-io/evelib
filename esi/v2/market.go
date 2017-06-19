@@ -13,7 +13,7 @@ type MarketGroup struct {
 }
 
 func (client *Client) MarketGroupIDs() (results []int, err error) {
-	path := buildPath("/markets/groups/")
+	path := client.buildPath("/markets/groups/")
 	err = client.get(path, &results)
 	if err != nil {
 		return nil, err
@@ -22,7 +22,7 @@ func (client *Client) MarketGroupIDs() (results []int, err error) {
 }
 
 func (client *Client) MarketGroupGet(id int) (result *MarketGroup, err error) {
-	path := buildPath(fmt.Sprintf("/markets/groups/%v/", id))
+	path := client.buildPath(fmt.Sprintf("/markets/groups/%v/", id))
 	err = client.get(path, &result)
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ type MarketPrice struct {
 // MarketPrices returns the market prices for all published items in EVE Online
 // from the `/markets/prices/` endpoint.
 func (client *Client) MarketPrices() (results []*MarketPrice, err error) {
-	path := buildPath("/markets/prices/")
+	path := client.buildPath("/markets/prices/")
 	err = client.get(path, &results)
 	return
 }

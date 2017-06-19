@@ -11,6 +11,6 @@ type Status struct {
 
 // StatusGet returns the current Status of the EVE Online server.
 func (client *Client) StatusGet() (status *Status, err error) {
-	err = client.get(buildPath("/status/"), &status)
+	err = client.get(client.buildPath("/status/"), &status)
 	return
 }

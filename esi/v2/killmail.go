@@ -6,7 +6,7 @@ import (
 )
 
 func (client *Client) KillmailGet(id int, hash string) (kill *Killmail, err error) {
-	path := buildPath(fmt.Sprintf("/killmails/%v/%v/", id, hash))
+	path := client.buildPath(fmt.Sprintf("/killmails/%v/%v/", id, hash))
 	err = client.get(path, &kill)
 	if err != nil {
 		return nil, err

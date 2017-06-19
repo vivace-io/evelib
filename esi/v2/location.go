@@ -4,7 +4,7 @@ import "fmt"
 
 // RegionIDs returns a list of constellation IDs from ESI.
 func (client *Client) RegionIDs() (results []int, err error) {
-	path := buildPath("/universe/regions/")
+	path := client.buildPath("/universe/regions/")
 	err = client.get(path, &results)
 	if err != nil {
 		return nil, err
@@ -14,7 +14,7 @@ func (client *Client) RegionIDs() (results []int, err error) {
 
 // RegionGet accepts a region's ID and returns its ESI model.
 func (client *Client) RegionGet(id int) (result *Region, err error) {
-	path := buildPath(fmt.Sprintf("/universe/regions/%v/", id))
+	path := client.buildPath(fmt.Sprintf("/universe/regions/%v/", id))
 	err = client.get(path, &result)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ type Region struct {
 
 // ConstellationIDs returns a list of constellation IDs from ESI.
 func (client *Client) ConstellationIDs() (results []int, err error) {
-	path := buildPath("/universe/constellations/")
+	path := client.buildPath("/universe/constellations/")
 	err = client.get(path, &results)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (client *Client) ConstellationIDs() (results []int, err error) {
 
 // ConstellationGet accepts a constellation's ID and returns its ESI model.
 func (client *Client) ConstellationGet(id int) (result *Constellation, err error) {
-	path := buildPath(fmt.Sprintf("/universe/constellations/%v/", id))
+	path := client.buildPath(fmt.Sprintf("/universe/constellations/%v/", id))
 	err = client.get(path, &result)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ type Constellation struct {
 
 // SystemIDs returns a list of system IDs from ESI.
 func (client *Client) SystemIDs() (results []int, err error) {
-	path := buildPath("/universe/systems/")
+	path := client.buildPath("/universe/systems/")
 	err = client.get(path, &results)
 	if err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func (client *Client) SystemIDs() (results []int, err error) {
 
 // SystemGet accepts a solar system's ID and returns its ESI model.
 func (client *Client) SystemGet(id int) (result *System, err error) {
-	path := buildPath(fmt.Sprintf("/universe/systems/%v/", id))
+	path := client.buildPath(fmt.Sprintf("/universe/systems/%v/", id))
 	err = client.get(path, &result)
 	if err != nil {
 		return nil, err

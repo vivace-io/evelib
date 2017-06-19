@@ -15,7 +15,7 @@ type ItemGroup struct {
 func (client *Client) ItemGroupIDs() (results []int, err error) {
 	for p := 1; ; p++ {
 		var ids []int
-		path := buildPath(fmt.Sprintf("/universe/groups/?page=%v", p))
+		path := client.buildPath(fmt.Sprintf("/universe/groups/?page=%v", p))
 		if err = client.get(path, &ids); err != nil {
 			err = fmt.Errorf("failed to retrieve page %v of item groups: %v", p, err)
 			break
@@ -31,7 +31,7 @@ func (client *Client) ItemGroupIDs() (results []int, err error) {
 
 // ItemGroupGet returns the ESI Item Group representation for the given ID.
 func (client *Client) ItemGroupGet(id int) (result *ItemGroup, err error) {
-	path := buildPath(fmt.Sprintf("/universe/groups/%v/", id))
+	path := client.buildPath(fmt.Sprintf("/universe/groups/%v/", id))
 	err = client.get(path, &result)
 	return
 }
@@ -56,7 +56,7 @@ type Item struct {
 func (client *Client) ItemIDs() (results []int, err error) {
 	for p := 1; ; p++ {
 		var ids []int
-		path := buildPath(fmt.Sprintf("/universe/types/?page=%v", p))
+		path := client.buildPath(fmt.Sprintf("/universe/types/?page=%v", p))
 		if err = client.get(path, &ids); err != nil {
 			err = fmt.Errorf("failed to retrieve page %v of types: %v", p, err)
 			break
@@ -72,7 +72,7 @@ func (client *Client) ItemIDs() (results []int, err error) {
 
 // ItemGet returns the ESI Item Type representation for the given ID.
 func (client *Client) ItemGet(id int) (result *Item, err error) {
-	path := buildPath(fmt.Sprintf("/universe/types/%v/", id))
+	path := client.buildPath(fmt.Sprintf("/universe/types/%v/", id))
 	err = client.get(path, &result)
 	return
 }
