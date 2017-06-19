@@ -13,6 +13,9 @@ import (
 //      returns
 //          https://esi.tech.ccp.is/v1/killmails/{someID}/{someHash}
 func (client *Client) buildPath(route string) (path string) {
+	if client.apiRoot == "" {
+		client.apiRoot = DefaultAPIAddr
+	}
 	if strings.Contains(route, "/killmails/") {
 		return fmt.Sprintf("%v/%v%v", client.apiRoot, "v1", route)
 	}
