@@ -45,6 +45,24 @@ func (client *Client) MarketPrices() (results []*MarketPrice, err error) {
 	return
 }
 
+// MarketRegionHistory general market statistics for a historical day in EVE.
+type MarketRegionHistory struct {
+	Average    float32 `json:"average"`
+	Date       ESITime `json:"date"`
+	Highest    float32 `json:"highest"`
+	Lowest     float32 `json:"lowest"`
+	OrderCount int     `json:"order_count"`
+	Volume     int64   `json:"volume"`
+}
+
+// MarketRegionHistoryGet returns the historical market statistics for an item
+// in a region.
+func (client *Client) MarketRegionHistoryGet(regionID, typeID int) (results []*MarketRegionHistory, err error) {
+	path := client.buildPath(fmt.Sprintf("/markets/%v/history/?type_id=%v", regionID, typeID))
+	err = client.get(path, &results)
+	return
+}
+
 type MarketOrder struct {
 	OrderID    int       `json:"order_id"`
 	BuyOrder   bool      `json:"is_buy_order"`

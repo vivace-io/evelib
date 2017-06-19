@@ -28,6 +28,9 @@ func (client *Client) buildPath(route string) (path string) {
 	if route == "/markets/prices/" {
 		return fmt.Sprintf("%v/%v%v", client.apiRoot, "v1", route)
 	}
+	if strings.Contains(route, "/markets/") && strings.Contains(route, "/history/") {
+		return fmt.Sprintf("%v/%v%v", client.apiRoot, "v1", route)
+	}
 	if route == "/status/" {
 		return fmt.Sprintf("%v/%v%v", client.apiRoot, "v1", route)
 	}
