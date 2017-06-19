@@ -2,6 +2,46 @@ package esi
 
 import "testing"
 
+func TestItemGroupIDs(t *testing.T) {
+	t.Parallel()
+	ids, err := testClient.ItemGroupIDs()
+	if err != nil {
+		t.Errorf("failed to retrieve item group IDs: %v", err)
+	}
+	if !(len(ids) >= 1293) {
+		t.Errorf("want 1293 or more item group IDs, but got %v", len(ids))
+	}
+}
+
+func TestItemGroupGet(t *testing.T) {
+	t.Parallel()
+	// Retrieve group 462 (veldspar)
+	group, err := testClient.ItemGroupGet(462)
+	if err != nil {
+		t.Errorf("failed to retrieve group 462: %v", err)
+		return
+	}
+	if group == nil {
+		t.Error("group returned unexpectedly nil")
+		return
+	}
+	if group.GroupID != 462 {
+		t.Errorf("ItemGroup.GroupID mismatch -- want 462 but got %v", group.GroupID)
+	}
+	if group.Name != "Veldspar" {
+		t.Errorf("ItemGroup.Name mismatch -- want 'Veldspar' but got '%v'", group.Name)
+	}
+	if group.CategoryID != 25 {
+		t.Errorf("ItemGroup.CategoryID mismatch -- want 25 but got %v", group.CategoryID)
+	}
+	if group.Published != true {
+		t.Error("ItemGroup.Published mismatch -- want true but got false")
+	}
+	if len(group.Types) != 8 {
+		t.Errorf("ItemGroup.Types mismatch - want 8 types but got %v", len(group.Types))
+	}
+}
+
 func TestItemIDs(t *testing.T) {
 	t.Parallel()
 	ids, err := testClient.ItemIDs()

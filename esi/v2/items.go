@@ -2,13 +2,22 @@ package esi
 
 import "fmt"
 
-// ItemIDs returns a list of all Item Type IDs from ESI.
-func (client *Client) ItemIDs() (results []int, err error) {
+// ItemGroup from EVE Online.
+type ItemGroup struct {
+	GroupID    int    `json:"group_id"`
+	CategoryID int    `json:"category_id"`
+	Name       string `json:"name"`
+	Published  bool   `json:"published"`
+	Types      []int  `json:"types"`
+}
+
+// ItemGroupIDs returns a list of Item Group IDs from ESI.
+func (client *Client) ItemGroupIDs() (results []int, err error) {
 	for p := 1; ; p++ {
 		var ids []int
-		path := buildPath(fmt.Sprintf("/universe/types/?page=%v", p))
+		path := buildPath(fmt.Sprintf("/universe/groups/?page=%v", p))
 		if err = client.get(path, &ids); err != nil {
-			err = fmt.Errorf("failed to retrieve page %v of types: %v", p, err)
+			err = fmt.Errorf("failed to retrieve page %v of item groups: %v", p, err)
 			break
 		}
 		if len(ids) != 0 {
@@ -17,6 +26,13 @@ func (client *Client) ItemIDs() (results []int, err error) {
 			break
 		}
 	}
+	return
+}
+
+// ItemGroupGet returns the ESI Item Group representation for the given ID.
+func (client *Client) ItemGroupGet(id int) (result *ItemGroup, err error) {
+	path := buildPath(fmt.Sprintf("/universe/groups/%v/", id))
+	err = client.get(path, &result)
 	return
 }
 
@@ -34,6 +50,24 @@ type Item struct {
 	PortionSize int     `json:"portion_size"`
 	Mass        float32 `json:"mass"`
 	IconID      int     `json:"icon_id"`
+}
+
+// ItemIDs returns a list of all Item Type IDs from ESI.
+func (client *Client) ItemIDs() (results []int, err error) {
+	for p := 1; ; p++ {
+		var ids []int
+		path := buildPath(fmt.Sprintf("/universe/types/?page=%v", p))
+		if err = client.get(path, &ids); err != nil {
+			err = fmt.Errorf("failed to retrieve page %v of types: %v", p, err)
+			break
+		}
+		if len(ids) != 0 {
+			results = append(results, ids...)
+		} else {
+			break
+		}
+	}
+	return
 }
 
 // ItemGet returns the ESI Item Type representation for the given ID.
