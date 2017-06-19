@@ -16,6 +16,9 @@ func (client *Client) buildPath(route string) (path string) {
 	if client.apiRoot == "" {
 		client.apiRoot = DefaultAPIAddr
 	}
+	if client.apiRoot[len(client.apiRoot)-1] == byte('/') {
+		client.apiRoot = string(client.apiRoot[:len(client.apiRoot)-1])
+	}
 	if strings.Contains(route, "/killmails/") {
 		return fmt.Sprintf("%v/%v%v", client.apiRoot, "v1", route)
 	}
