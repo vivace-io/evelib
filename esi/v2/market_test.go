@@ -47,8 +47,8 @@ func TestMarketPrices(t *testing.T) {
 		t.Errorf("failed to retrieve prices: %v", err)
 		return
 	}
-	if len(prices) != 10859 {
-		t.Errorf("expected 10859 results but have %v", len(prices))
+	if !(len(prices) >= 10859) {
+		t.Errorf("expected 10859 or more results but have %v", len(prices))
 	}
 }
 
@@ -86,4 +86,16 @@ func TestMarketRegionHistory(t *testing.T) {
 			t.Errorf("history[%v].Lowest <= 0", i)
 		}
 	}
+}
+
+func TestMarketOrdersGet(t *testing.T) {
+	t.Parallel()
+	orders, err := testClient.MarketOrdersGet(10000002)
+	if err != nil {
+		t.Errorf("failed to retrieve market orders: %v", err)
+	}
+	if len(orders) == 0 {
+		t.Error("empty response")
+	}
+	t.Logf("Have %v orders.", len(orders))
 }

@@ -63,10 +63,34 @@ func (client *Client) MarketRegionHistoryGet(regionID, typeID int) (results []*M
 	return
 }
 
+// MarketOrdersGet retrieves all market orders in the specified region.
+func (client *Client) MarketOrdersGet(regionID int) (results []*MarketOrder, err error) {
+	for p := 1; ; p++ {
+		var orders []*MarketOrder
+		path := client.buildPath(fmt.Sprintf("/markets/%v/orders/?page=%v", regionID, p))
+		if err = client.get(path, &orders); err != nil {
+			err = fmt.Errorf("failed to retrieve page %v of orders: %v", p, err)
+			break
+		}
+		if len(orders) != 0 {
+			results = append(results, orders...)
+		} else {
+			break
+		}
+	}
+	return
+}
+
 type MarketOrder struct {
-	OrderID    int       `json:"order_id"`
-	BuyOrder   bool      `json:"is_buy_order"`
-	Issued     time.Time `json:"issued"`
-	LocationID int       `json:"location_id"`
-	Duration   int       `json:"duration"`
+	OrderID      int       `json:"order_id"`
+	TypeID       int       `json:"type_id"`
+	LocationID   int       `json:"location_id"`
+	VolumeTotal  int       `json:"volume_total"`
+	VolumeRemain int       `json:"volume_remain"`
+	MinVolume    int       `json:"min_volume"`
+	Price        float32   `json:"price"`
+	IsBuyOrder   bool      `json:"is_buy_order"`
+	Duration     int       `json:"duration"`
+	Issued       time.Time `json:"issued"`
+	Range        string    `json:"range"`
 }
