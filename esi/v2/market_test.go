@@ -12,7 +12,7 @@ func TestMargetGroupIDs(t *testing.T) {
 		t.Errorf("failed to retrieve market group IDs: %v", err)
 		t.FailNow()
 	}
-	if len(results) != 2164 {
+	if !(len(results) >= 2164) {
 		t.Errorf("bad result - want results length 2164, got %v", len(results))
 	}
 }
