@@ -1,6 +1,7 @@
 package redisq
 
 const (
+	// DefaultAddr is the default address the RedisQ client queries.
 	DefaultAddr = "https://redisq.zkillboard.com/listen.php"
 )
 

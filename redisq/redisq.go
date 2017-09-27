@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"sync"
 	"time"
-
-	"github.com/vivace-io/evelib/crest"
 )
 
 // RecieverChan is a channel that may recive a payload containing information
@@ -30,7 +28,7 @@ type Payload struct {
 		Points     int     `json:"points"`
 		Href       string  `json:"href"`
 	}
-	Killmail crest.Killmail `json:"killmail"`
+	Killmail Killmail `json:"killmail"`
 }
 
 type response struct {
@@ -80,7 +78,7 @@ func (client *Client) AddChan(reciever RecieverChan) {
 	client.rchan = append(client.rchan, reciever)
 }
 
-// AddChan adds a function to the client which will be called andpassed all
+// AddFunc adds a function to the client which will be called andpassed all
 // future killmails that are recieved.
 func (client *Client) AddFunc(reciever RecieverFunc) {
 	client.locker.Lock()

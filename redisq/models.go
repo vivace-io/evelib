@@ -1,19 +1,9 @@
-package crest
+package redisq
 
 import (
-	"fmt"
 	"strings"
 	"time"
 )
-
-func (c *Client) KillmailGet(id int, hash string) (result *Killmail, err error) {
-	err = c.get(fmt.Sprintf("killmails/%v/%v/", id, hash), &result)
-	if err == nil {
-		// Only assign hash on success.
-		result.KillHash = hash
-	}
-	return
-}
 
 // Killmail from a kill
 type Killmail struct {
@@ -60,7 +50,11 @@ type Victim struct {
 	ShipType    Type        `json:"shipType"`
 	DamageTaken int         `json:"damageTaken"`
 	Items       []Item      `json:"items"`
-	Position    Position    `json:"position"`
+	Position    struct {
+		X float64 `json:"x"`
+		Y float64 `json:"y"`
+		Z float64 `json:"z"`
+	} `json:"position"`
 }
 
 // Item dropped/destroyed in a killmail
@@ -69,4 +63,42 @@ type Item struct {
 	Type       Type `json:"itemType"`
 	QtyDropped int  `json:"quantityDropped"`
 	Flag       int  `json:"flag"`
+}
+
+// Corporation model for a Corporation entity in EVE Online.
+type Corporation struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Href string `json:"href"`
+}
+
+// Alliance in EVE.
+type Alliance struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Href string `json:"href"`
+}
+
+// Character in EVE.
+type Character struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Href string `json:"href"`
+}
+
+// Type of an item in a killmail
+type Type struct {
+	ID   int    `json:"id"`
+	Href string `json:"href"`
+	Name string `json:"name"`
+	Icon struct {
+		Href string `json:"href"`
+	}
+}
+
+// SolarSystem represents a solar system in EVE.
+type SolarSystem struct {
+	ID   int    `json:"id"`
+	Href string `json:"href"`
+	Name string `json:"name"`
 }
