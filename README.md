@@ -8,12 +8,6 @@ This collection of libraries is still in a very early stage of development, and 
 
 **Stable API Versions:** when a version is deemed stable, it will be tagged on the repository and accessable via `gopkg.in` for versioning.
 
-## DEPRECIATION NOTICE
-
-Packages supporting CREST and the XML APIs will be removed in the next few days. As it stands, ESI covers most data provided by the CREST/XML APIs, so users should switch to that.
-
-As far as I know, this library has little to no traffic/usage, so I doubt this will cause much issue.
-
 ## Version 0
 
 `go get github.com/vivace-io/evelib`
