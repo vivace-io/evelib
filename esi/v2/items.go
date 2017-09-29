@@ -4,11 +4,11 @@ import "fmt"
 
 // ItemGroup from EVE Online.
 type ItemGroup struct {
-	GroupID    int    `json:"group_id"`
-	CategoryID int    `json:"category_id"`
-	Name       string `json:"name"`
-	Published  bool   `json:"published"`
-	Types      []int  `json:"types"`
+	GroupID    int32   `json:"group_id"`
+	CategoryID int32   `json:"category_id"`
+	Name       string  `json:"name"`
+	Published  bool    `json:"published"`
+	Types      []int32 `json:"types"`
 }
 
 // ItemGroupIDs returns a list of Item Group IDs from ESI.
@@ -43,19 +43,19 @@ type Item struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Published   bool    `json:"published"`
-	GroupID     int     `json:"group_id"`
+	GroupID     int32   `json:"group_id"`
 	Radius      float32 `json:"radius"`
 	Volume      float32 `json:"volume"`
 	Capacity    float32 `json:"capacity"`
-	PortionSize int     `json:"portion_size"`
+	PortionSize int32   `json:"portion_size"`
 	Mass        float32 `json:"mass"`
-	IconID      int     `json:"icon_id"`
+	IconID      int32   `json:"icon_id"`
 }
 
 // ItemIDs returns a list of all Item Type IDs from ESI.
-func (client *Client) ItemIDs() (results []int, err error) {
+func (client *Client) ItemIDs() (results []int32, err error) {
 	for p := 1; ; p++ {
-		var ids []int
+		var ids []int32
 		path := client.buildPath(fmt.Sprintf("/universe/types/?page=%v", p))
 		if err = client.get(path, &ids); err != nil {
 			err = fmt.Errorf("failed to retrieve page %v of types: %v", p, err)
