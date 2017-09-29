@@ -41,7 +41,7 @@ func TestESITimeUnmarshalJSON(t *testing.T) {
 		return
 	}
 	if m.Time.Year() != 2015 {
-		t.Errorf("Year mismatch - want 2015 have %v", m.Time.Year)
+		t.Errorf("Year mismatch - want 2015 have %v", m.Time.Year())
 	}
 	if m.Time.Month().String() != "May" {
 		t.Errorf("Month mismatch - want 'May' have '%v'", m.Time.Month().String())
