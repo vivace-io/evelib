@@ -1,10 +1,5 @@
 package redisq
 
-const (
-	// DefaultAddr is the default address the RedisQ client queries.
-	DefaultAddr = "https://redisq.zkillboard.com/listen.php"
-)
-
 // Options is used to configure the RedisQ Client.
 type Options struct {
 	// Addr of the target RedisQ service. When left empty, defaults to DefaultAddr.

@@ -2,11 +2,15 @@ package redisq
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"sync"
 	"time"
+)
+
+const (
+	// DefaultAddr is the default address the RedisQ client queries.
+	DefaultAddr = "https://redisq.zkillboard.com/listen.php"
 )
 
 // RecieverChan is a channel that may recive a payload containing information
@@ -63,9 +67,7 @@ func NewClient(opts *Options) (client *Client, err error) {
 		webClient: &http.Client{},
 	}
 	if client.addr == "" {
-		err = errors.New("address for RedisQ endpoint was not set")
-		client = nil
-		return
+		client.addr = DefaultAddr
 	}
 	return
 }
