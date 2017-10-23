@@ -7,15 +7,13 @@ import (
 
 // Killmail from a kill
 type Killmail struct {
-	SolarSystem   SolarSystem `json:"solarSystem"`
-	LocationID    int         `json:"locationID"`
-	KillID        int         `json:"killID"`
-	KillHash      string      `json:"killHash"`
-	Timestamp     KillTime    `json:"killTime"`
-	Attackers     []Attacker  `json:"attackers"`
-	AttackerCount int         `json:"attackerCount"`
-	Victim        Victim      `json:"victim"`
-	Value         float32     `json:"value"`
+	ID            int        `json:"killmail_id"`
+	Hash          string     `json:"killmail_hash"`
+	SolarSystemID int        `json:"solar_system_id"`
+	Timestamp     KillTime   `json:"killmail_time"`
+	Victim        Victim     `json:"victim"`
+	Attackers     []Attacker `json:"attackers"`
+	Zkb           Zkb        `json:"zkb"`
 }
 
 // KillTime embeds time.Time and implements the UnmarshalJSON interface to
@@ -32,25 +30,25 @@ func (t *KillTime) UnmarshalJSON(b []byte) (err error) {
 
 // Attacker in a killmail
 type Attacker struct {
-	Character      Character   `json:"character"`
-	SecurityStatus float32     `json:"securityStatus"`
-	Corporation    Corporation `json:"corporation"`
-	Alliance       Alliance    `json:"alliance"`
-	ShipType       Type        `json:"shipType"`
-	WeaponType     Type        `json:"weaponType"`
-	DamageDone     int         `json:"damageDone"`
-	FinalBlow      bool        `json:"finalBlow"`
+	CharacterID    int     `json:"character_id"`
+	CorporationID  int     `json:"corporation_id"`
+	AllianceID     int     `json:"alliance_id"`
+	ShipTypeID     int     `json:"ship_type_id"`
+	WeaponTypeID   int     `json:"weapon_type_id"`
+	DamageDone     float32 `json:"damage_done"`
+	FinalBlow      bool    `json:"final_blow"`
+	SecurityStatus float32 `json:"security_status"`
 }
 
 // Victim in a killmail
 type Victim struct {
-	Character   Character   `json:"character"`
-	Corporation Corporation `json:"corporation"`
-	Alliance    Alliance    `json:"alliance"`
-	ShipType    Type        `json:"shipType"`
-	DamageTaken int         `json:"damageTaken"`
-	Items       []Item      `json:"items"`
-	Position    struct {
+	CharacterID   int    `json:"character_id"`
+	CorporationID int    `json:"corporation_id"`
+	AllianceID    int    `json:"alliance_id"`
+	ShipTypeID    int    `json:"ship_type_id"`
+	DamageTaken   int    `json:"damage_taken"`
+	Items         []Item `json:"items"`
+	Position      struct {
 		X float64 `json:"x"`
 		Y float64 `json:"y"`
 		Z float64 `json:"z"`
@@ -59,46 +57,21 @@ type Victim struct {
 
 // Item dropped/destroyed in a killmail
 type Item struct {
-	Singleton  int  `json:"singleton"`
-	Type       Type `json:"itemType"`
-	QtyDropped int  `json:"quantityDropped"`
-	Flag       int  `json:"flag"`
+	ItemTypeID        int `json:"item_type_id"`
+	Flag              int `json:"flag"`
+	Singleton         int `json:"singleton"`
+	QuantityDropped   int `json:"quantity_dropped"`
+	QuantityDestroyed int `json:"quantity_destroyed"`
 }
 
-// Corporation model for a Corporation entity in EVE Online.
-type Corporation struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Href string `json:"href"`
-}
-
-// Alliance in EVE.
-type Alliance struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Href string `json:"href"`
-}
-
-// Character in EVE.
-type Character struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Href string `json:"href"`
-}
-
-// Type of an item in a killmail
-type Type struct {
-	ID   int    `json:"id"`
-	Href string `json:"href"`
-	Name string `json:"name"`
-	Icon struct {
-		Href string `json:"href"`
-	}
-}
-
-// SolarSystem represents a solar system in EVE.
-type SolarSystem struct {
-	ID   int    `json:"id"`
-	Href string `json:"href"`
-	Name string `json:"name"`
+// Zkb is the meta data returned from ZKillboard.
+type Zkb struct {
+	Hash        string  `json:"hash"`
+	FittedValue float32 `json:"fittedValue"`
+	TotalValue  float32 `json:"totalValue"`
+	Points      int     `json:"points"`
+	NPC         bool    `json:"npc"`
+	Solo        bool    `json:"solo"`
+	AWOX        bool    `json:"aox"`
+	Href        string  `json:"href"`
 }

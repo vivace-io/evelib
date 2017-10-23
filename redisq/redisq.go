@@ -24,15 +24,15 @@ type RecieverFunc func(Payload)
 // Payload is the json encoded response containing the killmail that is returned
 // as well as some meta information.
 type Payload struct {
-	KillID int `json:"killID"`
-	Zkb    struct {
+	KillID   int      `json:"killID"`
+	Killmail Killmail `json:"killmail"`
+	Zkb      struct {
 		LocationID int     `json:"locationID"`
 		Hash       string  `json:"hash"`
 		TotalValue float32 `json:"totalValue"`
 		Points     int     `json:"points"`
 		Href       string  `json:"href"`
 	}
-	Killmail Killmail `json:"killmail"`
 }
 
 type response struct {
@@ -161,9 +161,7 @@ func (client *Client) fetch() (resp response, err error) {
 func (client *Client) send(payload Payload) {
 	client.locker.RLock()
 	defer client.locker.RUnlock()
-	payload.Killmail.Value = payload.Zkb.TotalValue
-	payload.Killmail.LocationID = payload.Zkb.LocationID
-	payload.Killmail.KillHash = payload.Zkb.Hash
+	payload.Killmail.Hash = payload.Zkb.Hash
 	for _, c := range client.rchan {
 		go func() {
 			c <- payload
