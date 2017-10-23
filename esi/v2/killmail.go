@@ -32,10 +32,11 @@ type Killmail struct {
 			Z float64 `json:"z"`
 		} `json:"position"`
 		Items []struct {
-			ItemTypeID      int `json:"item_type_id"`
-			Singleton       int `json:"singleton"`
-			Flag            int `json:"flag"`
-			QuantityDropped int `json:"quantity_dropped"`
+			ItemTypeID        int `json:"item_type_id"`
+			Singleton         int `json:"singleton"`
+			Flag              int `json:"flag"`
+			QuantityDropped   int `json:"quantity_dropped"`
+			QuantityDestroyed int `json:"quantity_destroyed"`
 		} `json:"items"`
 	} `json:"victim"`
 	Attackers []struct {
