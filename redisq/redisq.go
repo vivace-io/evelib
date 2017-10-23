@@ -54,9 +54,8 @@ type Client struct {
 }
 
 // NewClient takes an option parameter, which may be nil, and configures and
-// returns a new client. Returns error for invalid configuration or any
-// connection problems.
-func NewClient(opts *Options) (client *Client, err error) {
+// returns a new client.
+func NewClient(opts *Options) (client *Client) {
 	if opts == nil {
 		opts = DefaultOptions()
 	}
