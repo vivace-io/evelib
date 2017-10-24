@@ -72,6 +72,6 @@ type Zkb struct {
 	Points      int     `json:"points"`
 	NPC         bool    `json:"npc"`
 	Solo        bool    `json:"solo"`
-	AWOX        bool    `json:"aox"`
+	AWOX        bool    `json:"awox"`
 	Href        string  `json:"href"`
 }
