@@ -35,7 +35,7 @@ type Attacker struct {
 	AllianceID     int     `json:"alliance_id"`
 	ShipTypeID     int     `json:"ship_type_id"`
 	WeaponTypeID   int     `json:"weapon_type_id"`
-	DamageDone     float32 `json:"damage_done"`
+	DamageDone     int     `json:"damage_done"`
 	FinalBlow      bool    `json:"final_blow"`
 	SecurityStatus float32 `json:"security_status"`
 }
