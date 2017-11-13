@@ -10,16 +10,10 @@ type Killmail struct {
 	ID            int        `json:"killmail_id"`
 	Hash          string     `json:"killmail_hash"`
 	SolarSystemID int        `json:"solar_system_id"`
-	Timestamp     KillTime   `json:"killmail_time"`
+	Timestamp     time.Time  `json:"killmail_time"`
 	Victim        Victim     `json:"victim"`
 	Attackers     []Attacker `json:"attackers"`
 	Zkb           Zkb        `json:"zkb"`
-}
-
-// KillTime embeds time.Time and implements the UnmarshalJSON interface to
-// handle CREST's non RFC 3339 timestamp.
-type KillTime struct {
-	time.Time
 }
 
 // UnmarshalJSON parses the timestamp from CREST in to Go's time.Time type.
