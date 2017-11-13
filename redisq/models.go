@@ -15,6 +15,15 @@ type Killmail struct {
 	Zkb           Zkb        `json:"zkb"`
 }
 
+<<<<<<< HEAD
+=======
+// UnmarshalJSON parses the timestamp from CREST in to Go's time.Time type.
+func (t *KillTime) UnmarshalJSON(b []byte) (err error) {
+	t.Time, err = time.Parse("2006.01.02 15:04:05", strings.Replace(string(b), "\"", "", 2))
+	return err
+}
+
+>>>>>>> eba3022d757d2b6a7e0d4b73564781e12c333720
 // Attacker in a killmail
 type Attacker struct {
 	CharacterID    int     `json:"character_id"`
